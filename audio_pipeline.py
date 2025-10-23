@@ -38,15 +38,17 @@ except ImportError as e:
 class AudioPipeline:
     """음성 파이프라인 클래스"""
     
-    def __init__(self, use_gpu=True):
+    def __init__(self, use_gpu=True, target_language=None):
         """
         파이프라인 초기화
         
         Args:
             use_gpu (bool): GPU 사용 여부
+            target_language (str): 대상 언어 ('ko', 'ja', 'en', None=자동감지)
         """
         self.use_gpu = use_gpu and torch.cuda.is_available()
         self.device = "cuda" if self.use_gpu else "cpu"
+        self.target_language = target_language
         
         # 폴더 경로 설정
         self.audio_input_dir = Path("audio_input")
@@ -61,7 +63,24 @@ class AudioPipeline:
         self.denoiser = None
         self.whisper_model = None
         
+        # 지원 언어 정보
+        self.supported_languages = {
+            'ko': '한국어',
+            'ja': '日本語',
+            'en': 'English',
+            'zh': '中文',
+            'es': 'Español',
+            'fr': 'Français',
+            'de': 'Deutsch',
+            'ru': 'Русский'
+        }
+        
         logger.info(f"파이프라인 초기화 완료 - 디바이스: {self.device}")
+        if target_language:
+            lang_name = self.supported_languages.get(target_language, target_language)
+            logger.info(f"대상 언어: {lang_name} ({target_language})")
+        else:
+            logger.info("언어: 자동 감지 모드")
     
     def _create_directories(self):
         """필요한 디렉토리 생성"""
@@ -208,12 +227,19 @@ class AudioPipeline:
             self._load_whisper()
             
             # 음성 인식 수행 (단어별 타임스탬프 포함)
-            result = self.whisper_model.transcribe(
-                str(audio_file), 
-                language="ko",
-                word_timestamps=True,
-                verbose=True
-            )
+            transcribe_options = {
+                "word_timestamps": True,
+                "verbose": True
+            }
+            
+            # 언어 설정
+            if self.target_language:
+                transcribe_options["language"] = self.target_language
+                logger.info(f"지정된 언어로 STT 처리: {self.supported_languages.get(self.target_language, self.target_language)}")
+            else:
+                logger.info("언어 자동 감지로 STT 처리")
+            
+            result = self.whisper_model.transcribe(str(audio_file), **transcribe_options)
             
             # 결과 텍스트 추출
             transcribed_text = result["text"].strip()
@@ -421,10 +447,27 @@ class AudioPipeline:
         
         logger.info(f"처리 결과 요약 저장: {summary_file}")
 
-def main():
-    """메인 함수"""
+def main(target_language=None):
+    """
+    메인 함수
+    
+    Args:
+        target_language (str): 대상 언어 코드 ('ko', 'ja', 'en', etc.)
+    """
     print("=== 음성 파이프라인 시작 ===")
     print("audio_input → 노이즈제거 → audio_out → STT → script_output")
+    print()
+    
+    # 언어 설정 안내
+    if target_language:
+        supported_languages = {
+            'ko': '한국어', 'ja': '日本語', 'en': 'English', 'zh': '中文',
+            'es': 'Español', 'fr': 'Français', 'de': 'Deutsch', 'ru': 'Русский'
+        }
+        lang_name = supported_languages.get(target_language, target_language)
+        print(f"🌐 대상 언어: {lang_name} ({target_language})")
+    else:
+        print("🌐 언어: 자동 감지 모드")
     print()
     
     try:
@@ -436,7 +479,7 @@ def main():
             print("⚠️  GPU 사용 불가 - CPU 모드로 실행")
         
         # 파이프라인 초기화
-        pipeline = AudioPipeline(use_gpu=use_gpu)
+        pipeline = AudioPipeline(use_gpu=use_gpu, target_language=target_language)
         
         # 모든 파일 처리
         results = pipeline.process_all_files()
