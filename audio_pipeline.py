@@ -31,7 +31,11 @@ logger = logging.getLogger(__name__)
 # SpeechBrain import를 조건부로 처리
 try:
     from speechbrain.inference.enhancement import SpectralMaskEnhancement
+    from speechbrain.inference.speaker import EncoderClassifier
     from speechbrain.utils.fetching import LocalStrategy
+    import numpy as np
+    from sklearn.cluster import AgglomerativeClustering
+    from sklearn.metrics.pairwise import cosine_similarity
     SPEECHBRAIN_AVAILABLE = True
 except ImportError as e:
     logger.warning(f"SpeechBrain 로딩 실패: {e}")
@@ -64,6 +68,7 @@ class AudioPipeline:
         # 모델 초기화
         self.denoiser = None
         self.whisper_model = None
+        self.speaker_encoder = None  # ECAPA-VOXCELEB 화자분리 모델
         
         # 지원 언어 정보
         self.supported_languages = {
@@ -247,7 +252,7 @@ class AudioPipeline:
             normalized = waveform / torch.max(torch.abs(waveform)) * 0.8
             return normalized
     
-    def _load_whisper(self, model_size="base"):
+    def _load_whisper(self, model_size="large-v3"):
         """Whisper 모델 로드"""
         if self.whisper_model is None:
             try:
@@ -257,6 +262,35 @@ class AudioPipeline:
             except Exception as e:
                 logger.error(f"Whisper 모델 로딩 실패: {e}")
                 raise
+    
+    def _load_speaker_encoder(self):
+        """ECAPA-VOXCELEB 화자분리 모델 로드"""
+        if self.speaker_encoder is None:
+            if not SPEECHBRAIN_AVAILABLE:
+                logger.warning("SpeechBrain을 사용할 수 없어 화자분리 기능을 사용할 수 없습니다")
+                return False
+                
+            try:
+                logger.info("ECAPA-VOXCELEB 화자분리 모델 로딩 중...")
+                
+                # 권한 문제 우회를 위해 임시 디렉토리 사용
+                import tempfile
+                temp_dir = tempfile.mkdtemp(prefix="speechbrain_")
+                
+                # ECAPA-VOXCELEB 모델 로드
+                self.speaker_encoder = EncoderClassifier.from_hparams(
+                    source="speechbrain/spkrec-ecapa-voxceleb",
+                    savedir=temp_dir,
+                    run_opts={"device": self.device}
+                )
+                logger.info("ECAPA-VOXCELEB 화자분리 모델 로딩 완료")
+                return True
+            except Exception as e:
+                logger.error(f"화자분리 모델 로딩 실패: {e}")
+                logger.info("권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.")
+                self.speaker_encoder = None
+                return False
+        return True
     
     def denoise_audio(self, input_file, output_file):
         """
@@ -344,12 +378,12 @@ class AudioPipeline:
             
             # 간단한 타임스탬프+화자 정보 파일 생성
             simple_file = Path(output_text_file).parent / f"{Path(output_text_file).stem}_simple.txt"
-            self._save_simple_transcript(simple_file, result)
+            self._save_simple_transcript(simple_file, result, audio_file)
             logger.info(f"간단한 전사 파일 생성: {simple_file}")
             
             # SRT 자막 파일 생성 (요청된 경우)
             if srt_file:
-                self._save_srt_file(srt_file, result)
+                self._save_srt_file(srt_file, result, audio_file)
                 logger.info(f"SRT 자막 파일 생성: {srt_file}")
             
             logger.info(f"STT 처리 완료: {output_text_file}")
@@ -413,12 +447,15 @@ class AudioPipeline:
         seconds = seconds % 60
         return f"{minutes:02d}:{seconds:06.3f}"
     
-    def _save_srt_file(self, srt_file, result):
+    def _save_srt_file(self, srt_file, result, audio_file=None):
         """SRT 자막 파일 생성 (화자 정보 포함)"""
         with open(srt_file, 'w', encoding='utf-8') as f:
             if "segments" in result:
-                # 스마트 화자 할당 사용
-                speaker_assignments = self._assign_smart_speakers(result["segments"])
+                # ECAPA-VOXCELEB 화자분리 시도, 실패시 스마트 화자 할당
+                if audio_file:
+                    speaker_assignments = self._assign_ecapa_speakers(audio_file, result["segments"])
+                else:
+                    speaker_assignments = self._assign_smart_speakers(result["segments"])
                 
                 subtitle_index = 1
                 for i, segment in enumerate(result["segments"]):
@@ -460,12 +497,17 @@ class AudioPipeline:
         
         return f"{hours:02d}:{minutes:02d}:{secs:02d},{milliseconds:03d}"
     
-    def _save_simple_transcript(self, simple_file, result):
+    def _save_simple_transcript(self, simple_file, result, audio_file=None):
         """간단한 타임스탬프+화자 정보 텍스트 파일 생성"""
         with open(simple_file, 'w', encoding='utf-8') as f:
             if "segments" in result:
-                # 스마트 화자 할당
-                speaker_assignments = self._assign_smart_speakers(result["segments"])
+                # ECAPA-VOXCELEB 화자분리 시도, 실패시 스마트 화자 할당
+                if audio_file:
+                    logger.info("ECAPA-VOXCELEB 화자분리 시작...")
+                    speaker_assignments = self._assign_ecapa_speakers(audio_file, result["segments"])
+                else:
+                    logger.info("규칙 기반 화자 할당 사용...")
+                    speaker_assignments = self._assign_smart_speakers(result["segments"])
                 
                 for i, segment in enumerate(result["segments"]):
                     start_time = self._format_time(segment["start"])
@@ -487,6 +529,11 @@ class AudioPipeline:
         """세그먼트 특성을 기반으로 스마트 화자 할당"""
         if not segments:
             return []
+        
+        # 단일 화자 감지 로직
+        if self._is_single_speaker(segments):
+            logger.info("단일 화자로 감지됨 - 모든 세그먼트를 화자A로 할당")
+            return [f"화자A" for _ in segments]
         
         speaker_assignments = []
         current_speaker = 'A'
@@ -556,6 +603,226 @@ class AudioPipeline:
             speaker_name = f"화자{current_speaker}"
             speaker_assignments.append(speaker_name)
             last_end_time = end_time
+        
+        return speaker_assignments
+    
+    def _is_single_speaker(self, segments):
+        """단일 화자인지 판단하는 로직"""
+        if len(segments) <= 2:
+            return True  # 세그먼트가 2개 이하면 단일 화자로 간주
+        
+        # 화자 변경 신호 카운트
+        speaker_change_signals = 0
+        total_silence_time = 0
+        long_silences = 0
+        
+        for i in range(1, len(segments)):
+            prev_segment = segments[i-1]
+            curr_segment = segments[i]
+            
+            prev_end = prev_segment.get("end", 0)
+            curr_start = curr_segment.get("start", 0)
+            silence_duration = curr_start - prev_end
+            
+            total_silence_time += silence_duration
+            
+            # 긴 침묵 (3초 이상) - 화자 변경 신호
+            if silence_duration > 3.0:
+                long_silences += 1
+                speaker_change_signals += 1
+            
+            # 발화 길이 차이가 매우 큰 경우
+            prev_duration = prev_segment.get("end", 0) - prev_segment.get("start", 0)
+            curr_duration = curr_segment.get("end", 0) - curr_segment.get("start", 0)
+            
+            if prev_duration > 0 and curr_duration > 0:
+                duration_ratio = max(curr_duration, prev_duration) / min(curr_duration, prev_duration)
+                if duration_ratio > 3.0:  # 3배 이상 차이
+                    speaker_change_signals += 1
+        
+        # 평균 침묵 시간
+        avg_silence = total_silence_time / max(len(segments) - 1, 1)
+        
+        # 단일 화자 판단 기준
+        single_speaker_criteria = [
+            speaker_change_signals <= 1,  # 화자 변경 신호가 1개 이하
+            long_silences <= 1,           # 긴 침묵이 1개 이하
+            avg_silence < 2.0,            # 평균 침묵이 2초 미만
+            len(segments) < 8             # 세그먼트가 8개 미만 (짧은 발화)
+        ]
+        
+        # 기준 중 3개 이상 만족하면 단일 화자
+        single_speaker_score = sum(single_speaker_criteria)
+        
+        logger.info(f"단일 화자 판단: 점수 {single_speaker_score}/4 "
+                   f"(화자변경신호: {speaker_change_signals}, 긴침묵: {long_silences}, "
+                   f"평균침묵: {avg_silence:.1f}초, 세그먼트: {len(segments)}개)")
+        
+        return single_speaker_score >= 3
+    
+    def _extract_speaker_embeddings(self, audio_file, segments):
+        """ECAPA-VOXCELEB를 사용하여 세그먼트별 화자 임베딩 추출"""
+        if not self._load_speaker_encoder():
+            logger.warning("화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다")
+            return None
+        
+        try:
+            # 오디오 파일 로드
+            waveform, sample_rate = torchaudio.load(audio_file)
+            
+            # 모노 채널로 변환
+            if waveform.shape[0] > 1:
+                waveform = torch.mean(waveform, dim=0, keepdim=True)
+            
+            # 16kHz로 리샘플링 (ECAPA 모델 요구사항)
+            if sample_rate != 16000:
+                resampler = torchaudio.transforms.Resample(sample_rate, 16000)
+                waveform = resampler(waveform)
+                sample_rate = 16000
+            
+            embeddings = []
+            valid_segments = []
+            
+            for segment in segments:
+                start_time = segment.get("start", 0)
+                end_time = segment.get("end", start_time + 1)
+                text = segment.get("text", "").strip()
+                
+                if not text or end_time <= start_time:
+                    continue
+                
+                # 세그먼트 오디오 추출
+                start_sample = int(start_time * sample_rate)
+                end_sample = int(end_time * sample_rate)
+                
+                if start_sample >= waveform.shape[1] or end_sample <= start_sample:
+                    continue
+                
+                segment_audio = waveform[:, start_sample:end_sample]
+                
+                # 너무 짧은 세그먼트는 건너뛰기 (최소 0.5초)
+                if segment_audio.shape[1] < sample_rate * 0.5:
+                    continue
+                
+                # 화자 임베딩 추출
+                try:
+                    embedding = self.speaker_encoder.encode_batch(segment_audio.to(self.device))
+                    embeddings.append(embedding.squeeze().cpu().numpy())
+                    valid_segments.append(segment)
+                except Exception as e:
+                    logger.warning(f"세그먼트 임베딩 추출 실패: {e}")
+                    continue
+            
+            if not embeddings:
+                logger.warning("유효한 화자 임베딩을 추출할 수 없습니다")
+                return None
+            
+            return np.array(embeddings), valid_segments
+            
+        except Exception as e:
+            logger.error(f"화자 임베딩 추출 실패: {e}")
+            return None
+    
+    def _cluster_speakers(self, embeddings, min_speakers=2, max_speakers=5):
+        """화자 임베딩을 클러스터링하여 화자 구분"""
+        try:
+            # 코사인 유사도 계산
+            similarity_matrix = cosine_similarity(embeddings)
+            
+            # 거리 행렬로 변환 (1 - 유사도)
+            distance_matrix = 1 - similarity_matrix
+            
+            # 최적의 클러스터 수 결정
+            best_n_clusters = min_speakers
+            best_score = -1
+            
+            for n_clusters in range(min_speakers, min(max_speakers + 1, len(embeddings) + 1)):
+                try:
+                    clustering = AgglomerativeClustering(
+                        n_clusters=n_clusters,
+                        metric='precomputed',
+                        linkage='average'
+                    )
+                    labels = clustering.fit_predict(distance_matrix)
+                    
+                    # 실루엣 스코어 계산 (간단한 평가)
+                    if len(set(labels)) > 1:
+                        from sklearn.metrics import silhouette_score
+                        score = silhouette_score(distance_matrix, labels, metric='precomputed')
+                        if score > best_score:
+                            best_score = score
+                            best_n_clusters = n_clusters
+                except:
+                    continue
+            
+            # 최종 클러스터링
+            clustering = AgglomerativeClustering(
+                n_clusters=best_n_clusters,
+                metric='precomputed',
+                linkage='average'
+            )
+            labels = clustering.fit_predict(distance_matrix)
+            
+            logger.info(f"화자 클러스터링 완료: {best_n_clusters}명의 화자 감지")
+            return labels
+            
+        except Exception as e:
+            logger.error(f"화자 클러스터링 실패: {e}")
+            return None
+    
+    def _assign_ecapa_speakers(self, audio_file, segments):
+        """ECAPA-VOXCELEB 기반 실제 화자분리"""
+        # 화자 임베딩 추출
+        embedding_result = self._extract_speaker_embeddings(audio_file, segments)
+        
+        if embedding_result is None:
+            logger.warning("ECAPA 화자분리 실패, 규칙 기반 방식 사용")
+            return self._assign_smart_speakers(segments)
+        
+        embeddings, valid_segments = embedding_result
+        
+        # 화자 클러스터링
+        cluster_labels = self._cluster_speakers(embeddings)
+        
+        if cluster_labels is None:
+            logger.warning("화자 클러스터링 실패, 규칙 기반 방식 사용")
+            return self._assign_smart_speakers(segments)
+        
+        # 클러스터 라벨을 화자 이름으로 변환
+        unique_labels = sorted(set(cluster_labels))
+        label_to_speaker = {}
+        
+        for i, label in enumerate(unique_labels):
+            speaker_letter = chr(ord('A') + i)
+            label_to_speaker[label] = f"화자{speaker_letter}"
+        
+        # 전체 세그먼트에 화자 할당
+        speaker_assignments = []
+        valid_idx = 0
+        
+        for segment in segments:
+            text = segment.get("text", "").strip()
+            if not text:
+                # 빈 텍스트는 이전 화자 유지
+                if speaker_assignments:
+                    speaker_assignments.append(speaker_assignments[-1])
+                else:
+                    speaker_assignments.append("화자A")
+                continue
+            
+            # 유효한 세그먼트인지 확인
+            if valid_idx < len(valid_segments) and segment == valid_segments[valid_idx]:
+                # 클러스터링 결과 사용
+                cluster_label = cluster_labels[valid_idx]
+                speaker_name = label_to_speaker[cluster_label]
+                speaker_assignments.append(speaker_name)
+                valid_idx += 1
+            else:
+                # 유효하지 않은 세그먼트는 이전 화자 유지
+                if speaker_assignments:
+                    speaker_assignments.append(speaker_assignments[-1])
+                else:
+                    speaker_assignments.append("화자A")
         
         return speaker_assignments
     
