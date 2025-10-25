@@ -108,13 +108,15 @@ def process_one(fp: Path, out_dir: Path, model, diar_pipe, device: str, batch: i
                 continue
             spk = seg.get("speaker", "UNK")
             if spk not in spk_map:
-                spk_map[spk] = f"화자{len(spk_map) + 1}"
+                # A, B, C, ... 형식으로 화자 이름 생성
+                speaker_letter = chr(ord('A') + len(spk_map))
+                spk_map[spk] = f"화자{speaker_letter}"
             lines.append(f"[{mmss(seg.get('start', 0.0))}] {spk_map[spk]} : {txt}")
 
         out_path = out_dir / f"{fp.stem}_transcript_{lang}.txt"
         write_lines(out_path, lines)
         
-        print(f"✅ 완료: {fp.name} -> {out_path.name}")
+        print(f" 완료: {fp.name} -> {out_path.name}")
         return out_path
         
     except Exception as e:

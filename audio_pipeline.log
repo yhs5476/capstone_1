@@ -81,3 +81,256 @@
 2025-10-23 17:25:42,856 - INFO - 파일 처리 완료: audio_input\test.mp3
 2025-10-23 17:25:42,857 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251023_172542.txt
 2025-10-23 17:25:42,857 - INFO - 모든 파일 처리 완료
+2025-10-25 13:04:58,746 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 13:04:58,746 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 13:04:58,746 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 13:04:58,746 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 13:04:58,841 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [allow_tf32, disable_jit_profiling]
+2025-10-25 13:04:58,841 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 13:04:58,843 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 13:04:58,843 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-25 13:04:58,979 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-25 13:04:58,980 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-25 13:04:58,980 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-25 13:04:58,980 - INFO - 디렉토리 생성/확인: script_output
+2025-10-25 13:04:58,980 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-25 13:04:58,980 - INFO - 대상 언어: 日本語 (ja)
+2025-10-25 13:04:58,981 - INFO - 총 1개 파일 처리 시작
+2025-10-25 13:04:58,981 - INFO - [1/1] 처리 중: test.mp3
+2025-10-25 13:04:58,981 - INFO - 노이즈 제거 시작: audio_input\test.mp3
+2025-10-25 13:04:58,982 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-25 13:04:58,982 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-25 13:04:59,529 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-25 13:04:59,529 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-25 13:04:59,529 - INFO - 대안 방법으로 재시도...
+2025-10-25 13:04:59,529 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-25 13:04:59,604 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-25 13:04:59,654 - INFO - 노이즈 제거 완료: audio_out\test_denoised.wav
+2025-10-25 13:04:59,661 - INFO - STT 처리 시작: audio_output\test_denoised.wav
+2025-10-25 13:04:59,662 - INFO - Whisper 모델 (base) 로딩 중...
+2025-10-25 13:05:00,323 - INFO - Whisper 모델 로딩 완료
+2025-10-25 13:05:00,323 - INFO - 지정된 언어로 STT 처리: 日本語
+2025-10-25 13:05:02,891 - INFO - SRT 자막 파일 생성: script_output\test_subtitle.srt
+2025-10-25 13:05:02,893 - INFO - STT 처리 완료: script_output\test_transcript.txt
+2025-10-25 13:05:02,894 - INFO - 파일 처리 완료: audio_input\test.mp3
+2025-10-25 13:05:02,894 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251025_130502.txt
+2025-10-25 13:05:02,894 - INFO - 모든 파일 처리 완료
+2025-10-25 15:30:04,419 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 15:30:04,419 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 15:30:04,419 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 15:30:04,419 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 15:30:04,517 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-25 15:30:04,517 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 15:30:04,517 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 15:30:04,517 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-25 15:30:14,300 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 15:30:14,301 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 15:30:14,301 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 15:30:14,301 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 15:30:14,394 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-25 15:30:14,394 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 15:30:14,395 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 15:30:14,395 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-25 15:30:14,509 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-25 15:30:14,510 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-25 15:30:14,510 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-25 15:30:14,510 - INFO - 디렉토리 생성/확인: script_output
+2025-10-25 15:30:14,562 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-25 15:30:14,562 - INFO - 대상 언어: 日本語 (ja)
+2025-10-25 15:30:14,563 - INFO - 총 1개 파일 처리 시작
+2025-10-25 15:30:14,563 - INFO -   - 오디오 파일: 1개
+2025-10-25 15:30:14,565 - INFO -   - 비디오 파일: 0개
+2025-10-25 15:30:14,567 - INFO - 노이즈 제거 시작: audio_input\test.mp3
+2025-10-25 15:30:14,567 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-25 15:30:14,567 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-25 15:30:15,038 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-25 15:30:15,040 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-25 15:30:15,040 - INFO - 대안 방법으로 재시도...
+2025-10-25 15:30:15,040 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-25 15:30:15,060 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-25 15:30:15,095 - INFO - 노이즈 제거 완료: audio_out\test_denoised.wav
+2025-10-25 15:30:15,103 - INFO - STT 처리 시작: audio_output\test_denoised.wav
+2025-10-25 15:30:15,104 - INFO - Whisper 모델 (base) 로딩 중...
+2025-10-25 15:30:15,679 - INFO - Whisper 모델 로딩 완료
+2025-10-25 15:30:15,679 - INFO - 지정된 언어로 STT 처리: 日本語
+2025-10-25 15:30:17,838 - INFO - SRT 자막 파일 생성: script_output\test_subtitle.srt
+2025-10-25 15:30:17,838 - INFO - STT 처리 완료: script_output\test_transcript.txt
+2025-10-25 15:30:17,838 - INFO - 파일 처리 완료: audio_input\test.mp3
+2025-10-25 15:30:17,840 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251025_153017.txt
+2025-10-25 15:30:17,840 - INFO - 모든 파일 처리 완료
+2025-10-25 15:31:02,315 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 15:31:02,315 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 15:31:02,315 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 15:31:02,315 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 15:31:02,406 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-25 15:31:02,406 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 15:31:02,406 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 15:31:02,406 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-25 15:31:02,518 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-25 15:31:02,518 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-25 15:31:02,519 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-25 15:31:02,519 - INFO - 디렉토리 생성/확인: script_output
+2025-10-25 15:31:02,560 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-25 15:31:02,560 - INFO - 언어: 자동 감지 모드
+2025-10-25 15:31:02,561 - INFO - 총 1개 파일 처리 시작
+2025-10-25 15:31:02,561 - INFO -   - 오디오 파일: 1개
+2025-10-25 15:31:02,562 - INFO -   - 비디오 파일: 0개
+2025-10-25 15:31:02,563 - INFO - 노이즈 제거 시작: audio_input\test.mp3
+2025-10-25 15:31:02,563 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-25 15:31:02,564 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-25 15:31:03,019 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-25 15:31:03,019 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-25 15:31:03,019 - INFO - 대안 방법으로 재시도...
+2025-10-25 15:31:03,019 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-25 15:31:03,038 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-25 15:31:03,087 - INFO - 노이즈 제거 완료: audio_out\test_denoised.wav
+2025-10-25 15:31:03,094 - INFO - STT 처리 시작: audio_output\test_denoised.wav
+2025-10-25 15:31:03,096 - INFO - Whisper 모델 (base) 로딩 중...
+2025-10-25 15:31:03,670 - INFO - Whisper 모델 로딩 완료
+2025-10-25 15:31:03,670 - INFO - 언어 자동 감지로 STT 처리
+2025-10-25 15:31:05,867 - INFO - SRT 자막 파일 생성: script_output\test_subtitle.srt
+2025-10-25 15:31:05,867 - INFO - STT 처리 완료: script_output\test_transcript.txt
+2025-10-25 15:31:05,868 - INFO - 파일 처리 완료: audio_input\test.mp3
+2025-10-25 15:31:05,869 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251025_153105.txt
+2025-10-25 15:31:05,869 - INFO - 모든 파일 처리 완료
+2025-10-25 15:32:49,588 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 15:32:49,588 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 15:32:49,588 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 15:32:49,588 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 15:32:49,677 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-25 15:32:49,677 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 15:32:49,678 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 15:32:49,678 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-25 15:32:49,787 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-25 15:32:49,787 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-25 15:32:49,787 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-25 15:32:49,787 - INFO - 디렉토리 생성/확인: script_output
+2025-10-25 15:32:49,827 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-25 15:32:49,828 - INFO - 언어: 자동 감지 모드
+2025-10-25 15:32:49,829 - INFO - 총 1개 파일 처리 시작
+2025-10-25 15:32:49,829 - INFO -   - 오디오 파일: 1개
+2025-10-25 15:32:49,829 - INFO -   - 비디오 파일: 0개
+2025-10-25 15:32:49,830 - INFO - 노이즈 제거 시작: audio_input\test.mp3
+2025-10-25 15:32:49,830 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-25 15:32:49,831 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-25 15:32:50,287 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-25 15:32:50,288 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-25 15:32:50,288 - INFO - 대안 방법으로 재시도...
+2025-10-25 15:32:50,288 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-25 15:32:50,309 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-25 15:32:50,337 - INFO - 노이즈 제거 완료: audio_out\test_denoised.wav
+2025-10-25 15:32:50,344 - INFO - STT 처리 시작: audio_output\test_denoised.wav
+2025-10-25 15:32:50,344 - INFO - Whisper 모델 (base) 로딩 중...
+2025-10-25 15:32:50,918 - INFO - Whisper 모델 로딩 완료
+2025-10-25 15:32:50,918 - INFO - 언어 자동 감지로 STT 처리
+2025-10-25 15:32:53,091 - INFO - SRT 자막 파일 생성: script_output\test_subtitle.srt
+2025-10-25 15:32:53,091 - INFO - STT 처리 완료: script_output\test_transcript.txt
+2025-10-25 15:32:53,092 - INFO - 파일 처리 완료: audio_input\test.mp3
+2025-10-25 15:32:53,092 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251025_153253.txt
+2025-10-25 15:32:53,092 - INFO - 모든 파일 처리 완료
+2025-10-25 15:35:50,451 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 15:35:50,451 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 15:35:50,451 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 15:35:50,451 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 15:35:50,544 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-25 15:35:50,544 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 15:35:50,544 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 15:35:50,545 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-25 15:35:50,655 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-25 15:35:50,655 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-25 15:35:50,655 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-25 15:35:50,655 - INFO - 디렉토리 생성/확인: script_output
+2025-10-25 15:35:50,697 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-25 15:35:50,697 - INFO - 언어: 자동 감지 모드
+2025-10-25 15:35:50,698 - INFO - 총 1개 파일 처리 시작
+2025-10-25 15:35:50,699 - INFO -   - 오디오 파일: 1개
+2025-10-25 15:35:50,699 - INFO -   - 비디오 파일: 0개
+2025-10-25 15:35:50,700 - INFO - 노이즈 제거 시작: audio_input\test.mp3
+2025-10-25 15:35:50,700 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-25 15:35:50,700 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-25 15:35:51,168 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-25 15:35:51,169 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-25 15:35:51,169 - INFO - 대안 방법으로 재시도...
+2025-10-25 15:35:51,169 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-25 15:35:51,189 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-25 15:35:51,223 - INFO - 노이즈 제거 완료: audio_out\test_denoised.wav
+2025-10-25 15:35:51,231 - INFO - STT 처리 시작: audio_output\test_denoised.wav
+2025-10-25 15:35:51,231 - INFO - Whisper 모델 (base) 로딩 중...
+2025-10-25 15:35:51,824 - INFO - Whisper 모델 로딩 완료
+2025-10-25 15:35:51,825 - INFO - 언어 자동 감지로 STT 처리
+2025-10-25 15:35:53,988 - ERROR - STT 처리 실패 (audio_output\test_denoised.wav): cannot access local variable 'curr_duration' where it is not associated with a value
+2025-10-25 15:35:53,988 - ERROR - 파일 처리 실패 (audio_input\test.mp3): cannot access local variable 'curr_duration' where it is not associated with a value
+2025-10-25 15:35:53,988 - ERROR - 파일 처리 실패: test.mp3 - cannot access local variable 'curr_duration' where it is not associated with a value
+2025-10-25 15:35:53,990 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251025_153553.txt
+2025-10-25 15:35:53,990 - INFO - 모든 파일 처리 완료
+2025-10-25 15:36:28,771 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 15:36:28,771 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 15:36:28,771 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 15:36:28,771 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 15:36:28,862 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [allow_tf32, disable_jit_profiling]
+2025-10-25 15:36:28,862 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 15:36:28,863 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 15:36:28,863 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-25 15:36:28,974 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-25 15:36:28,974 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-25 15:36:28,974 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-25 15:36:28,976 - INFO - 디렉토리 생성/확인: script_output
+2025-10-25 15:36:29,015 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-25 15:36:29,015 - INFO - 언어: 자동 감지 모드
+2025-10-25 15:36:29,017 - INFO - 총 1개 파일 처리 시작
+2025-10-25 15:36:29,017 - INFO -   - 오디오 파일: 1개
+2025-10-25 15:36:29,017 - INFO -   - 비디오 파일: 0개
+2025-10-25 15:36:29,019 - INFO - 노이즈 제거 시작: audio_input\test.mp3
+2025-10-25 15:36:29,019 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-25 15:36:29,019 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-25 15:36:29,465 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-25 15:36:29,466 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-25 15:36:29,466 - INFO - 대안 방법으로 재시도...
+2025-10-25 15:36:29,466 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-25 15:36:29,487 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-25 15:36:29,517 - INFO - 노이즈 제거 완료: audio_out\test_denoised.wav
+2025-10-25 15:36:29,525 - INFO - STT 처리 시작: audio_output\test_denoised.wav
+2025-10-25 15:36:29,525 - INFO - Whisper 모델 (base) 로딩 중...
+2025-10-25 15:36:30,099 - INFO - Whisper 모델 로딩 완료
+2025-10-25 15:36:30,099 - INFO - 언어 자동 감지로 STT 처리
+2025-10-25 15:36:32,277 - ERROR - STT 처리 실패 (audio_output\test_denoised.wav): cannot access local variable 'curr_duration' where it is not associated with a value
+2025-10-25 15:36:32,277 - ERROR - 파일 처리 실패 (audio_input\test.mp3): cannot access local variable 'curr_duration' where it is not associated with a value
+2025-10-25 15:36:32,277 - ERROR - 파일 처리 실패: test.mp3 - cannot access local variable 'curr_duration' where it is not associated with a value
+2025-10-25 15:36:32,278 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251025_153632.txt
+2025-10-25 15:36:32,278 - INFO - 모든 파일 처리 완료
+2025-10-25 15:37:36,957 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 15:37:36,957 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 15:37:36,957 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 15:37:36,957 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 15:37:37,044 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-25 15:37:37,045 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 15:37:37,045 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 15:37:37,045 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-25 15:37:37,154 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-25 15:37:37,154 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-25 15:37:37,154 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-25 15:37:37,154 - INFO - 디렉토리 생성/확인: script_output
+2025-10-25 15:37:37,193 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-25 15:37:37,195 - INFO - 언어: 자동 감지 모드
+2025-10-25 15:37:37,196 - INFO - 총 1개 파일 처리 시작
+2025-10-25 15:37:37,196 - INFO -   - 오디오 파일: 1개
+2025-10-25 15:37:37,196 - INFO -   - 비디오 파일: 0개
+2025-10-25 15:37:37,198 - INFO - 노이즈 제거 시작: audio_input\test.mp3
+2025-10-25 15:37:37,198 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-25 15:37:37,198 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-25 15:37:37,824 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-25 15:37:37,824 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-25 15:37:37,824 - INFO - 대안 방법으로 재시도...
+2025-10-25 15:37:37,824 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-25 15:37:37,845 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-25 15:37:37,874 - INFO - 노이즈 제거 완료: audio_out\test_denoised.wav
+2025-10-25 15:37:37,884 - INFO - STT 처리 시작: audio_output\test_denoised.wav
+2025-10-25 15:37:37,884 - INFO - Whisper 모델 (base) 로딩 중...
+2025-10-25 15:37:38,457 - INFO - Whisper 모델 로딩 완료
+2025-10-25 15:37:38,457 - INFO - 언어 자동 감지로 STT 처리
+2025-10-25 15:37:40,608 - INFO - 간단한 전사 파일 생성: script_output\test_transcript_simple.txt
+2025-10-25 15:37:40,608 - INFO - SRT 자막 파일 생성: script_output\test_subtitle.srt
+2025-10-25 15:37:40,608 - INFO - STT 처리 완료: script_output\test_transcript.txt
+2025-10-25 15:37:40,609 - INFO - 파일 처리 완료: audio_input\test.mp3
+2025-10-25 15:37:40,610 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251025_153740.txt
+2025-10-25 15:37:40,610 - INFO - 모든 파일 처리 완료
