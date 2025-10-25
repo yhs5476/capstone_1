@@ -1,6 +1,15 @@
-# 음성 파이프라인 (Audio Pipeline)
+# 🎵 Audio Translator - LiveCaptions Style
 
-음성 파일의 노이즈를 제거하고 Whisper를 사용하여 음성을 텍스트로 변환하는 파이프라인입니다.
+음성 파일의 노이즈를 제거하고 Whisper를 사용하여 음성을 텍스트로 변환한 후 번역하는 GUI 응용프로그램입니다.
+
+## ✨ 주요 기능
+
+- 🎯 **음성 인식**: OpenAI Whisper 기반 고정밀 음성 인식
+- 🌍 **다국어 번역**: Google Translate API를 통한 실시간 번역
+- 👥 **화자 분리**: SpeechBrain ECAPA-VOXCELEB 모델 기반 화자 구분
+- 🔇 **노이즈 제거**: SpeechBrain 기반 오디오 품질 향상
+- 💻 **사용자 친화적 GUI**: LiveCaptions-Translator 스타일의 직관적 인터페이스
+- 📁 **다양한 형식 지원**: MP3, WAV, MP4, AVI, MOV 등
 
 ## 파이프라인 구조
 
@@ -26,23 +35,39 @@ pip install -r requirements.txt
 # https://ffmpeg.org/download.html 에서 다운로드 후 PATH 추가
 ```
 
-## 사용 방법
+## 🚀 사용법
 
-### 1. 기본 사용법 (한국어 자동 감지)
+### 🖥️ GUI 애플리케이션 (권장)
+
+#### 1. 실행 방법
+```bash
+# Windows
+run_gui.bat
+
+# 또는 직접 실행
+python audio_translator_gui.py
+```
+
+#### 2. 사용 단계
+1. **📂 파일 선택**: "파일 선택" 버튼으로 음성/비디오 파일 선택
+2. **⚙️ 설정**: 소스 언어, 번역 언어, 화자분리/노이즈제거 옵션 설정
+3. **🚀 처리 시작**: "처리 시작" 버튼 클릭
+4. **📝 결과 확인**: 원본 텍스트, 번역 텍스트, 로그 탭에서 결과 확인
+5. **💾 저장**: "결과 저장" 버튼으로 텍스트 파일 저장
+
+### 🖥️ 명령줄 인터페이스
+
+#### 1. 기본 사용법 (한국어 자동 감지)
 ```bash
 python audio_pipeline.py
 ```
 
-### 2. 일본어 영상/음성 처리
+#### 2. 일본어 영상/음성 처리
 ```bash
-# 일본어 전용 스크립트
 python audio_pipeline_japanese.py
-
-# 또는 메인 스크립트에서 언어 지정
-python -c "from audio_pipeline import main; main('ja')"
 ```
 
-### 3. 다국어 지원 (대화형 선택)
+#### 3. 다국어 지원 (대화형 선택)
 ```bash
 python audio_pipeline_multilang.py
 ```

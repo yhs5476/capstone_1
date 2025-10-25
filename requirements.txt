@@ -10,3 +10,7 @@ scipy>=1.7.0
 
 # 추가 유틸리티
 pathlib2>=2.3.0
+
+# GUI 및 번역 패키지
+googletrans==4.0.0rc1
+scikit-learn>=1.0.0

@@ -510,3 +510,11 @@
 2025-10-25 15:54:15,459 - INFO - 파일 처리 완료: audio_input\test.mp3
 2025-10-25 15:54:15,460 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251025_155415.txt
 2025-10-25 15:54:15,460 - INFO - 모든 파일 처리 완료
+2025-10-25 16:04:02,084 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-25 16:04:02,084 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-25 16:04:02,085 - DEBUG - Registered checkpoint save hook for save
+2025-10-25 16:04:02,085 - DEBUG - Registered checkpoint load hook for load
+2025-10-25 16:04:02,186 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [allow_tf32, disable_jit_profiling]
+2025-10-25 16:04:02,186 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-25 16:04:02,187 - DEBUG - Registered checkpoint save hook for _save
+2025-10-25 16:04:02,187 - DEBUG - Registered checkpoint load hook for _recover
