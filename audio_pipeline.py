@@ -559,9 +559,15 @@ class AudioPipeline:
             return self._fallback_speaker_assignment(segments)
     
     def _voice_feature_based_assignment(self, audio_file, segments):
-        """음성 특성(주파수, 피치, 스펙트럼) 기반 화자 분리"""
+        """음성 특성(주파수, 피치, 스펙트럼) 기반 화자 분리 + 독백 처리"""
         try:
-            logger.info("음성 특성 추출 중...")
+            logger.info("음성 특성 추출 및 독백 분석 중...")
+            
+            # 독백 여부 사전 판단
+            is_monologue = self._detect_monologue_pattern(segments)
+            if is_monologue:
+                logger.info("독백 패턴 감지 - 독백 전용 처리 모드")
+                return self._handle_monologue_segments(segments)
             
             # 오디오 파일 로드
             waveform, sample_rate = torchaudio.load(audio_file)
@@ -614,6 +620,201 @@ class AudioPipeline:
         except Exception as e:
             logger.error(f"음성 특성 기반 화자분리 실패: {e}")
             return self._fallback_speaker_assignment(segments)
+    
+    def _detect_monologue_pattern(self, segments):
+        """독백 패턴 감지 (개선된 버전)"""
+        try:
+            logger.info(f"독백 패턴 분석 중... (세그먼트 수: {len(segments)})")
+            
+            # 세그먼트가 너무 적어도 독백 가능성 검토
+            if len(segments) < 2:
+                logger.info("세그먼트 1개 - 독백으로 판단")
+                return True
+            
+            # 1. 침묵 시간 분석
+            silence_durations = []
+            long_silences = 0  # 2초 이상 침묵 (기준 완화)
+            very_long_silences = 0  # 5초 이상 침묵
+            
+            for i in range(1, len(segments)):
+                prev_end = segments[i-1].get("end", 0)
+                curr_start = segments[i].get("start", 0)
+                silence = curr_start - prev_end
+                silence_durations.append(silence)
+                
+                if silence > 5.0:
+                    very_long_silences += 1
+                elif silence > 2.0:
+                    long_silences += 1
+            
+            avg_silence = sum(silence_durations) / len(silence_durations) if silence_durations else 0
+            
+            # 2. 발화 길이 분석
+            segment_durations = []
+            for segment in segments:
+                duration = segment.get("end", 0) - segment.get("start", 0)
+                segment_durations.append(duration)
+            
+            avg_duration = sum(segment_durations) / len(segment_durations)
+            max_duration = max(segment_durations) if segment_durations else 0
+            
+            # 3. 텍스트 패턴 분석
+            total_text_length = sum(len(segment.get("text", "")) for segment in segments)
+            avg_text_length = total_text_length / len(segments)
+            
+            # 4. 화자 변경 신호 분석
+            speaker_change_signals = 0
+            for i in range(1, len(segments)):
+                curr_text = segments[i].get("text", "").strip()
+                prev_text = segments[i-1].get("text", "").strip()
+                
+                # 대화 신호 키워드 (질문-응답 패턴)
+                question_words = ['?', '？', '뭐', '무엇', 'なに', 'what', 'how']
+                response_words = ['네', '예', '아니', 'はい', 'そう', 'yes', 'no']
+                
+                if (any(q in prev_text for q in question_words) and 
+                    any(r in curr_text for r in response_words)):
+                    speaker_change_signals += 1
+            
+            # 5. 독백 판단 기준 (더 관대하게)
+            monologue_indicators = [
+                very_long_silences == 0,               # 매우 긴 침묵(5초+)이 없음
+                avg_silence < 2.0,                     # 평균 침묵이 2초 미만 (완화)
+                avg_duration > 1.5 or max_duration > 4.0,  # 평균 1.5초+ 또는 최대 4초+
+                avg_text_length > 10,                  # 평균 텍스트가 10자 이상 (완화)
+                speaker_change_signals == 0,           # 화자 변경 신호가 없음
+                len(segments) <= 5                     # 세그먼트가 5개 이하 (독백은 보통 적음)
+            ]
+            
+            monologue_score = sum(monologue_indicators)
+            
+            logger.info(f"독백 분석 결과: 점수 {monologue_score}/6 "
+                       f"(매우긴침묵: {very_long_silences}, 긴침묵: {long_silences}, "
+                       f"평균침묵: {avg_silence:.1f}초, 평균발화: {avg_duration:.1f}초, "
+                       f"최대발화: {max_duration:.1f}초, 평균텍스트: {avg_text_length:.1f}자, "
+                       f"화자변경신호: {speaker_change_signals})")
+            
+            # 6개 중 4개 이상 만족하면 독백으로 판단
+            is_monologue = monologue_score >= 4
+            
+            if is_monologue:
+                logger.info("🎤 독백으로 판단됨 - 독백 전용 처리 모드 활성화")
+            else:
+                logger.info("💬 대화로 판단됨 - 음성 특성 기반 화자분리 진행")
+            
+            return is_monologue
+            
+        except Exception as e:
+            logger.error(f"독백 패턴 감지 실패: {e}")
+            # 오류 시 안전하게 독백으로 처리 (단일 화자 우선)
+            logger.info("오류로 인해 독백으로 처리")
+            return True
+    
+    def _handle_monologue_segments(self, segments):
+        """독백 세그먼트 전용 처리 - 단일 화자 유지"""
+        try:
+            logger.info("🎤 독백 모드: 단일 화자로 처리")
+            
+            # 독백은 기본적으로 단일 화자 (화자A)
+            speaker_assignments = ["화자A" for _ in segments]
+            
+            # 독백 내에서도 명확한 주제 전환이 있는 경우에만 화자 분리
+            topic_changes = self._detect_strong_topic_changes(segments)
+            
+            if topic_changes:
+                logger.info(f"독백 내 강한 주제 전환 감지: {len(topic_changes)}개 지점")
+                current_speaker = 'A'
+                
+                for i, segment in enumerate(segments):
+                    if i in topic_changes:
+                        current_speaker = 'B' if current_speaker == 'A' else 'A'
+                        logger.info(f"세그먼트 {i}: 강한 주제 전환 → 화자{current_speaker}")
+                    
+                    speaker_assignments[i] = f"화자{current_speaker}"
+            else:
+                logger.info("주제 전환 없음 - 완전한 단일 화자 유지")
+            
+            # 독백 결과 로깅
+            from collections import Counter
+            speaker_count = Counter(speaker_assignments)
+            logger.info(f"🎤 독백 처리 완료: {dict(speaker_count)}")
+            
+            return speaker_assignments
+            
+        except Exception as e:
+            logger.error(f"독백 세그먼트 처리 실패: {e}")
+            return ["화자A" for _ in segments]
+    
+    def _detect_strong_topic_changes(self, segments):
+        """독백 내 강한 주제 전환만 감지 (매우 엄격한 기준)"""
+        try:
+            topic_changes = []
+            
+            # 매우 강한 주제 전환 신호만 감지
+            strong_transition_keywords = [
+                # 한국어 - 명확한 전환
+                '그런데 말이야', '아 그리고', '참 그런데', '아 맞다', '그건 그렇고',
+                # 일본어 - 명확한 전환  
+                'ところで', 'そういえば', 'あ、そうそう', 'それはそうと',
+                # 영어 - 명확한 전환
+                'by the way', 'speaking of', 'oh and', 'that reminds me'
+            ]
+            
+            for i in range(1, len(segments)):
+                curr_text = segments[i].get("text", "").strip().lower()
+                
+                # 강한 전환 키워드가 있는 경우만
+                if any(keyword in curr_text for keyword in strong_transition_keywords):
+                    topic_changes.append(i)
+                    logger.debug(f"강한 주제 전환 감지: 세그먼트 {i}")
+            
+            logger.info(f"강한 주제 전환 지점: {len(topic_changes)}개")
+            return topic_changes
+            
+        except Exception as e:
+            logger.error(f"강한 주제 전환 감지 실패: {e}")
+            return []
+    
+    def _detect_topic_changes(self, segments):
+        """텍스트 기반 주제 변화 감지"""
+        try:
+            topic_changes = []
+            
+            # 간단한 키워드 기반 주제 변화 감지
+            for i in range(1, len(segments)):
+                curr_text = segments[i].get("text", "").strip()
+                prev_text = segments[i-1].get("text", "").strip()
+                
+                # 주제 변화 신호 키워드 (한국어, 일본어, 영어)
+                topic_change_keywords = [
+                    # 한국어
+                    '그런데', '그리고', '또한', '한편', '그래서', '따라서', '결국', '마지막으로',
+                    '첫째', '둘째', '셋째', '다음으로', '이제', '그럼', '그러면',
+                    # 일본어  
+                    'それで', 'そして', 'また', 'しかし', 'でも', 'ところで', 'さて',
+                    'まず', '次に', '最後に', '結局', 'つまり', 'だから',
+                    # 영어
+                    'however', 'but', 'and', 'also', 'then', 'next', 'finally',
+                    'first', 'second', 'third', 'so', 'therefore', 'meanwhile'
+                ]
+                
+                # 현재 텍스트에 주제 변화 키워드가 있는지 확인
+                curr_lower = curr_text.lower()
+                if any(keyword in curr_lower for keyword in topic_change_keywords):
+                    topic_changes.append(i)
+                    logger.debug(f"주제 변화 감지: 세그먼트 {i} - {curr_text[:30]}...")
+                
+                # 텍스트 길이 급변 (긴 설명 후 짧은 요약 등)
+                if len(prev_text) > 50 and len(curr_text) < 20:
+                    topic_changes.append(i)
+                    logger.debug(f"텍스트 길이 급변 감지: 세그먼트 {i}")
+            
+            logger.info(f"주제 변화 지점: {len(topic_changes)}개 - {topic_changes}")
+            return topic_changes
+            
+        except Exception as e:
+            logger.error(f"주제 변화 감지 실패: {e}")
+            return []
     
     def _extract_voice_features(self, audio_segment, sample_rate):
         """세그먼트에서 음성 특성 추출 (피치, 스펙트럼 중심, MFCC)"""
