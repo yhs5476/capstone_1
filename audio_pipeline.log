@@ -518,3 +518,591 @@
 2025-10-25 16:04:02,186 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
 2025-10-25 16:04:02,187 - DEBUG - Registered checkpoint save hook for _save
 2025-10-25 16:04:02,187 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 17:46:19,015 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 17:46:19,015 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 17:46:19,015 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 17:46:19,019 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 17:46:19,114 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-26 17:46:19,114 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 17:46:19,114 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 17:46:19,114 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 17:46:19,825 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 17:46:19,825 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 17:46:19,825 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 17:46:19,825 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 17:46:19,885 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 17:46:19,885 - INFO - 언어: 자동 감지 모드
+2025-10-26 17:46:19,888 - INFO - 총 1개 파일 처리 시작
+2025-10-26 17:46:19,888 - INFO -   - 오디오 파일: 1개
+2025-10-26 17:46:19,888 - INFO -   - 비디오 파일: 0개
+2025-10-26 17:46:19,890 - INFO - 노이즈 제거 시작: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:46:19,890 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 17:46:19,891 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 17:46:20,383 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 17:46:20,383 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 17:46:20,383 - INFO - 대안 방법으로 재시도...
+2025-10-26 17:46:20,383 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 17:46:20,450 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 17:46:20,500 - INFO - 노이즈 제거 완료: audio_out\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:46:20,508 - INFO - STT 처리 시작: audio_output\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:46:20,508 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 17:46:29,457 - INFO - Whisper 모델 로딩 완료
+2025-10-26 17:46:29,457 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 17:46:34,310 - INFO - ECAPA-VOXCELEB 화자분리 시작...
+2025-10-26 17:46:34,310 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:46:34,310 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:46:34,527 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_w811zom3\hyperparams.yaml'
+2025-10-26 17:46:34,527 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_w811zom3\\hyperparams.yaml'
+2025-10-26 17:46:34,527 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:46:34,527 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:46:34,527 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:46:34,527 - INFO - 단일 화자 판단: 점수 4/4 (화자변경신호: 1, 긴침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:46:34,527 - INFO - 단일 화자로 감지됨 - 모든 세그먼트를 화자A로 할당
+2025-10-26 17:46:34,527 - INFO - 간단한 전사 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript_simple.txt
+2025-10-26 17:46:34,527 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:46:34,527 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:46:34,730 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_xz0aq_rr\hyperparams.yaml'
+2025-10-26 17:46:34,734 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_xz0aq_rr\\hyperparams.yaml'
+2025-10-26 17:46:34,734 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:46:34,734 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:46:34,734 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:46:34,734 - INFO - 단일 화자 판단: 점수 4/4 (화자변경신호: 1, 긴침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:46:34,734 - INFO - 단일 화자로 감지됨 - 모든 세그먼트를 화자A로 할당
+2025-10-26 17:46:34,735 - INFO - SRT 자막 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_subtitle.srt
+2025-10-26 17:46:34,735 - INFO - STT 처리 완료: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript.txt
+2025-10-26 17:46:34,738 - INFO - 파일 처리 완료: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:46:34,738 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_174634.txt
+2025-10-26 17:46:34,738 - INFO - 모든 파일 처리 완료
+2025-10-26 17:49:33,019 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 17:49:33,019 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 17:49:33,019 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 17:49:33,020 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 17:49:33,110 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [allow_tf32, disable_jit_profiling]
+2025-10-26 17:49:33,110 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 17:49:33,111 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 17:49:33,111 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 17:49:33,544 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 17:49:33,544 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 17:49:33,544 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 17:49:33,544 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 17:49:33,583 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 17:49:33,583 - INFO - 대상 언어: 日本語 (ja)
+2025-10-26 17:49:33,583 - INFO - 총 1개 파일 처리 시작
+2025-10-26 17:49:33,583 - INFO -   - 오디오 파일: 1개
+2025-10-26 17:49:33,583 - INFO -   - 비디오 파일: 0개
+2025-10-26 17:49:33,588 - INFO - 노이즈 제거 시작: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:49:33,588 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 17:49:33,588 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 17:49:34,050 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 17:49:34,050 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 17:49:34,050 - INFO - 대안 방법으로 재시도...
+2025-10-26 17:49:34,050 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 17:49:34,071 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 17:49:34,101 - INFO - 노이즈 제거 완료: audio_out\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:49:34,107 - INFO - STT 처리 시작: audio_output\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:49:34,107 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 17:49:42,171 - INFO - Whisper 모델 로딩 완료
+2025-10-26 17:49:42,171 - INFO - 지정된 언어로 STT 처리: 日本語
+2025-10-26 17:49:46,554 - INFO - ECAPA-VOXCELEB 화자분리 시작...
+2025-10-26 17:49:46,554 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:49:46,555 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:49:46,757 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_e0ziwtbt\hyperparams.yaml'
+2025-10-26 17:49:46,757 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_e0ziwtbt\\hyperparams.yaml'
+2025-10-26 17:49:46,757 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:49:46,757 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:49:46,757 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:49:46,757 - INFO - 단일 화자 판단: 점수 3/4 (화자변경신호: 1, 긴침묵: 0, 중간침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:49:46,757 - INFO - 다중 화자로 판단됨 - 화자 분리 진행
+2025-10-26 17:49:46,757 - INFO - 간단한 전사 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript_simple.txt
+2025-10-26 17:49:46,757 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:49:46,757 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:49:46,960 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_6jybb8se\hyperparams.yaml'
+2025-10-26 17:49:46,960 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_6jybb8se\\hyperparams.yaml'
+2025-10-26 17:49:46,960 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:49:46,960 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:49:46,960 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:49:46,960 - INFO - 단일 화자 판단: 점수 3/4 (화자변경신호: 1, 긴침묵: 0, 중간침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:49:46,960 - INFO - 다중 화자로 판단됨 - 화자 분리 진행
+2025-10-26 17:49:46,964 - INFO - SRT 자막 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_subtitle.srt
+2025-10-26 17:49:46,964 - INFO - STT 처리 완료: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript.txt
+2025-10-26 17:49:46,965 - INFO - 파일 처리 완료: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:49:46,965 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_174946.txt
+2025-10-26 17:49:46,965 - INFO - 모든 파일 처리 완료
+2025-10-26 17:50:59,645 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 17:50:59,645 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 17:50:59,645 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 17:50:59,645 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 17:50:59,733 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-26 17:50:59,738 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 17:50:59,738 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 17:50:59,738 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 17:51:00,184 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 17:51:00,184 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 17:51:00,184 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 17:51:00,184 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 17:51:00,225 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 17:51:00,225 - INFO - 언어: 자동 감지 모드
+2025-10-26 17:51:00,227 - INFO - 총 1개 파일 처리 시작
+2025-10-26 17:51:00,227 - INFO -   - 오디오 파일: 1개
+2025-10-26 17:51:00,227 - INFO -   - 비디오 파일: 0개
+2025-10-26 17:51:00,230 - INFO - 노이즈 제거 시작: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:51:00,230 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 17:51:00,230 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 17:51:00,672 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 17:51:00,672 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 17:51:00,672 - INFO - 대안 방법으로 재시도...
+2025-10-26 17:51:00,672 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 17:51:00,692 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 17:51:00,725 - INFO - 노이즈 제거 완료: audio_out\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:51:00,734 - INFO - STT 처리 시작: audio_output\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:51:00,734 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 17:51:08,976 - INFO - Whisper 모델 로딩 완료
+2025-10-26 17:51:08,976 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 17:51:13,504 - INFO - ECAPA-VOXCELEB 화자분리 시작...
+2025-10-26 17:51:13,504 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:51:13,504 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:51:13,706 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_xnyfr4fe\hyperparams.yaml'
+2025-10-26 17:51:13,707 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_xnyfr4fe\\hyperparams.yaml'
+2025-10-26 17:51:13,707 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:51:13,707 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:51:13,707 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:51:13,707 - INFO - 단일 화자 판단: 점수 3/4 (화자변경신호: 1, 긴침묵: 0, 중간침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:51:13,707 - INFO - 다중 화자로 판단됨 - 화자 분리 진행
+2025-10-26 17:51:13,707 - INFO - 다중 화자 모드로 화자 할당 시작
+2025-10-26 17:51:13,707 - INFO - 화자 분포: {'화자A': 3, '화자B': 1, '화자C': 1}
+2025-10-26 17:51:13,707 - INFO - 간단한 전사 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript_simple.txt
+2025-10-26 17:51:13,707 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:51:13,710 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:51:13,912 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain__xhscwn0\hyperparams.yaml'
+2025-10-26 17:51:13,912 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain__xhscwn0\\hyperparams.yaml'
+2025-10-26 17:51:13,912 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:51:13,913 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:51:13,913 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:51:13,913 - INFO - 단일 화자 판단: 점수 3/4 (화자변경신호: 1, 긴침묵: 0, 중간침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:51:13,913 - INFO - 다중 화자로 판단됨 - 화자 분리 진행
+2025-10-26 17:51:13,913 - INFO - 다중 화자 모드로 화자 할당 시작
+2025-10-26 17:51:13,913 - INFO - 화자 분포: {'화자A': 3, '화자B': 1, '화자C': 1}
+2025-10-26 17:51:13,913 - INFO - SRT 자막 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_subtitle.srt
+2025-10-26 17:51:13,913 - INFO - STT 처리 완료: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript.txt
+2025-10-26 17:51:13,915 - INFO - 파일 처리 완료: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:51:13,915 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_175113.txt
+2025-10-26 17:51:13,915 - INFO - 모든 파일 처리 완료
+2025-10-26 17:55:02,577 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 17:55:02,577 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 17:55:02,577 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 17:55:02,577 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 17:55:02,667 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [allow_tf32, disable_jit_profiling]
+2025-10-26 17:55:02,668 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 17:55:02,668 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 17:55:02,668 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 17:55:03,095 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 17:55:03,096 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 17:55:03,096 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 17:55:03,096 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 17:55:03,134 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 17:55:03,134 - INFO - 언어: 자동 감지 모드
+2025-10-26 17:55:03,136 - INFO - 총 1개 파일 처리 시작
+2025-10-26 17:55:03,136 - INFO -   - 오디오 파일: 1개
+2025-10-26 17:55:03,136 - INFO -   - 비디오 파일: 0개
+2025-10-26 17:55:03,138 - INFO - 노이즈 제거 시작: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:55:03,138 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 17:55:03,138 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 17:55:03,581 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 17:55:03,581 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 17:55:03,584 - INFO - 대안 방법으로 재시도...
+2025-10-26 17:55:03,584 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 17:55:03,604 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 17:55:03,633 - INFO - 노이즈 제거 완료: audio_out\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:55:03,642 - INFO - STT 처리 시작: audio_output\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:55:03,642 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 17:55:11,710 - INFO - Whisper 모델 로딩 완료
+2025-10-26 17:55:11,710 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 17:55:16,065 - INFO - ECAPA-VOXCELEB 화자분리 시작...
+2025-10-26 17:55:16,065 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:55:16,065 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:55:16,319 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_ici3fl1x\hyperparams.yaml'
+2025-10-26 17:55:16,320 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_ici3fl1x\\hyperparams.yaml'
+2025-10-26 17:55:16,320 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:55:16,320 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:55:16,320 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:55:16,320 - INFO - 단일 화자 판단: 점수 3/4 (화자변경신호: 1, 긴침묵: 0, 중간침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:55:16,320 - INFO - 다중 화자로 판단됨 - 화자 분리 진행
+2025-10-26 17:55:16,320 - INFO - 다중 화자 모드로 화자 할당 시작
+2025-10-26 17:55:16,320 - INFO - 초기 화자 분포: {'화자A': 3, '화자B': 1, '화자C': 1}
+2025-10-26 17:55:16,320 - INFO - 화자 일관성 후처리 시작...
+2025-10-26 17:55:16,321 - INFO - 유사한 화자 발견: 화자B(1개) ↔ 화자C(1개) (길이유사도: 0.98, 텍스트유사도: 1.00)
+2025-10-26 17:55:16,321 - INFO - 유사한 화자 그룹 통합: [('화자B', '화자C')]
+2025-10-26 17:55:16,321 - INFO - 최종 화자 분포: {'화자A': 3, '화자C': 2}
+2025-10-26 17:55:16,321 - INFO - 간단한 전사 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript_simple.txt
+2025-10-26 17:55:16,321 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:55:16,321 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:55:16,525 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_nb8ge7x2\hyperparams.yaml'
+2025-10-26 17:55:16,525 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_nb8ge7x2\\hyperparams.yaml'
+2025-10-26 17:55:16,525 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:55:16,525 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:55:16,525 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:55:16,527 - INFO - 단일 화자 판단: 점수 3/4 (화자변경신호: 1, 긴침묵: 0, 중간침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:55:16,527 - INFO - 다중 화자로 판단됨 - 화자 분리 진행
+2025-10-26 17:55:16,527 - INFO - 다중 화자 모드로 화자 할당 시작
+2025-10-26 17:55:16,527 - INFO - 초기 화자 분포: {'화자A': 3, '화자B': 1, '화자C': 1}
+2025-10-26 17:55:16,527 - INFO - 화자 일관성 후처리 시작...
+2025-10-26 17:55:16,527 - INFO - 유사한 화자 발견: 화자B(1개) ↔ 화자C(1개) (길이유사도: 0.98, 텍스트유사도: 1.00)
+2025-10-26 17:55:16,527 - INFO - 유사한 화자 그룹 통합: [('화자B', '화자C')]
+2025-10-26 17:55:16,527 - INFO - 최종 화자 분포: {'화자A': 3, '화자C': 2}
+2025-10-26 17:55:16,527 - INFO - SRT 자막 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_subtitle.srt
+2025-10-26 17:55:16,527 - INFO - STT 처리 완료: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript.txt
+2025-10-26 17:55:16,527 - INFO - 파일 처리 완료: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:55:16,527 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_175516.txt
+2025-10-26 17:55:16,527 - INFO - 모든 파일 처리 완료
+2025-10-26 17:55:45,875 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 17:55:45,875 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 17:55:45,877 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 17:55:45,877 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 17:55:45,966 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [allow_tf32, disable_jit_profiling]
+2025-10-26 17:55:45,966 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 17:55:45,966 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 17:55:45,966 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 17:55:46,399 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 17:55:46,399 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 17:55:46,399 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 17:55:46,399 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 17:55:46,442 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 17:55:46,442 - INFO - 언어: 자동 감지 모드
+2025-10-26 17:55:46,442 - INFO - 총 1개 파일 처리 시작
+2025-10-26 17:55:46,442 - INFO -   - 오디오 파일: 1개
+2025-10-26 17:55:46,442 - INFO -   - 비디오 파일: 0개
+2025-10-26 17:55:46,442 - INFO - 노이즈 제거 시작: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:55:46,442 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 17:55:46,442 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 17:55:46,891 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 17:55:46,897 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 17:55:46,897 - INFO - 대안 방법으로 재시도...
+2025-10-26 17:55:46,897 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 17:55:46,916 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 17:55:46,942 - INFO - 노이즈 제거 완료: audio_out\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:55:46,954 - INFO - STT 처리 시작: audio_output\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 17:55:46,954 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 17:55:54,915 - INFO - Whisper 모델 로딩 완료
+2025-10-26 17:55:54,915 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 17:55:59,292 - INFO - ECAPA-VOXCELEB 화자분리 시작...
+2025-10-26 17:55:59,292 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:55:59,292 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:55:59,499 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_y_inoeh0\hyperparams.yaml'
+2025-10-26 17:55:59,500 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_y_inoeh0\\hyperparams.yaml'
+2025-10-26 17:55:59,500 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:55:59,500 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:55:59,500 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:55:59,500 - INFO - 단일 화자 판단: 점수 3/4 (화자변경신호: 1, 긴침묵: 0, 중간침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:55:59,500 - INFO - 다중 화자로 판단됨 - 화자 분리 진행
+2025-10-26 17:55:59,500 - INFO - 다중 화자 모드로 화자 할당 시작
+2025-10-26 17:55:59,500 - INFO - 초기 화자 분포: {'화자A': 3, '화자B': 1, '화자C': 1}
+2025-10-26 17:55:59,500 - INFO - 화자 일관성 후처리 시작...
+2025-10-26 17:55:59,500 - INFO - 유사한 화자 발견: 화자B(1개) ↔ 화자C(1개) (길이유사도: 0.98, 텍스트유사도: 1.00)
+2025-10-26 17:55:59,500 - INFO - 유사한 화자 그룹 통합: [('화자B', '화자C')]
+2025-10-26 17:55:59,500 - INFO - 최종 화자 분포: {'화자A': 3, '화자C': 2}
+2025-10-26 17:55:59,500 - INFO - 간단한 전사 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript_simple.txt
+2025-10-26 17:55:59,500 - INFO - ECAPA-VOXCELEB 화자분리 모델 로딩 중...
+2025-10-26 17:55:59,500 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/spkrec-ecapa-voxceleb' if not cached
+2025-10-26 17:55:59,700 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--spkrec-ecapa-voxceleb\snapshots\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\hyperparams.yaml' -> 'C:\Users\yhs54\AppData\Local\Temp\speechbrain_q04uh3n_\hyperparams.yaml'
+2025-10-26 17:55:59,701 - ERROR - 화자분리 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--spkrec-ecapa-voxceleb\\snapshots\\0f99f2d0ebe89ac095bcc5903c4dd8f72b367286\\hyperparams.yaml' -> 'C:\\Users\\yhs54\\AppData\\Local\\Temp\\speechbrain_q04uh3n_\\hyperparams.yaml'
+2025-10-26 17:55:59,701 - INFO - 권한 문제일 수 있습니다. 관리자 권한으로 실행하거나 규칙 기반 방식을 사용합니다.
+2025-10-26 17:55:59,701 - WARNING - 화자분리 모델을 사용할 수 없어 규칙 기반 방식을 사용합니다
+2025-10-26 17:55:59,701 - WARNING - ECAPA 화자분리 실패, 규칙 기반 방식 사용
+2025-10-26 17:55:59,701 - INFO - 단일 화자 판단: 점수 3/4 (화자변경신호: 1, 긴침묵: 0, 중간침묵: 0, 평균침묵: 0.4초, 세그먼트: 5개)
+2025-10-26 17:55:59,701 - INFO - 다중 화자로 판단됨 - 화자 분리 진행
+2025-10-26 17:55:59,701 - INFO - 다중 화자 모드로 화자 할당 시작
+2025-10-26 17:55:59,701 - INFO - 초기 화자 분포: {'화자A': 3, '화자B': 1, '화자C': 1}
+2025-10-26 17:55:59,701 - INFO - 화자 일관성 후처리 시작...
+2025-10-26 17:55:59,702 - INFO - 유사한 화자 발견: 화자B(1개) ↔ 화자C(1개) (길이유사도: 0.98, 텍스트유사도: 1.00)
+2025-10-26 17:55:59,702 - INFO - 유사한 화자 그룹 통합: [('화자B', '화자C')]
+2025-10-26 17:55:59,702 - INFO - 최종 화자 분포: {'화자A': 3, '화자C': 2}
+2025-10-26 17:55:59,702 - INFO - SRT 자막 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_subtitle.srt
+2025-10-26 17:55:59,702 - INFO - STT 처리 완료: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript.txt
+2025-10-26 17:55:59,703 - INFO - 파일 처리 완료: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 17:55:59,703 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_175559.txt
+2025-10-26 17:55:59,703 - INFO - 모든 파일 처리 완료
+2025-10-26 18:03:32,069 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 18:03:32,069 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 18:03:32,070 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 18:03:32,070 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 18:03:32,157 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-26 18:03:32,157 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 18:03:32,158 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 18:03:32,158 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 18:03:32,592 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 18:03:32,592 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 18:03:32,592 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 18:03:32,593 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 18:03:32,638 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 18:03:32,638 - INFO - 언어: 자동 감지 모드
+2025-10-26 18:03:32,638 - INFO - 총 1개 파일 처리 시작
+2025-10-26 18:03:32,638 - INFO -   - 오디오 파일: 1개
+2025-10-26 18:03:32,638 - INFO -   - 비디오 파일: 0개
+2025-10-26 18:03:32,641 - INFO - 노이즈 제거 시작: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 18:03:32,642 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 18:03:32,642 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 18:03:33,133 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 18:03:33,133 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 18:03:33,133 - INFO - 대안 방법으로 재시도...
+2025-10-26 18:03:33,133 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 18:03:33,155 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 18:03:33,191 - INFO - 노이즈 제거 완료: audio_out\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 18:03:33,201 - INFO - STT 처리 시작: audio_output\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 18:03:33,201 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 18:03:41,254 - INFO - Whisper 모델 로딩 완료
+2025-10-26 18:03:41,254 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 18:03:45,604 - INFO - 음성 특성 기반 화자분리 시작...
+2025-10-26 18:03:45,607 - INFO - 음성 특성 기반 화자 분리 시작 - 총 5개 세그먼트
+2025-10-26 18:03:45,607 - INFO - 음성 특성 추출 중...
+2025-10-26 18:03:53,051 - INFO - 음성 특성 클러스터링 완료: 3명 화자 감지
+2025-10-26 18:03:53,051 - INFO - 음성 특성 기반 화자 분포: {'화자A': 2, '화자C': 2, '화자B': 1}
+2025-10-26 18:03:53,051 - INFO - 간단한 전사 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript_simple.txt
+2025-10-26 18:03:53,054 - INFO - 음성 특성 기반 화자 분리 시작 - 총 5개 세그먼트
+2025-10-26 18:03:53,054 - INFO - 음성 특성 추출 중...
+2025-10-26 18:03:53,156 - INFO - 음성 특성 클러스터링 완료: 3명 화자 감지
+2025-10-26 18:03:53,156 - INFO - 음성 특성 기반 화자 분포: {'화자A': 2, '화자C': 2, '화자B': 1}
+2025-10-26 18:03:53,156 - INFO - SRT 자막 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_subtitle.srt
+2025-10-26 18:03:53,157 - INFO - STT 처리 완료: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript.txt
+2025-10-26 18:03:53,157 - INFO - 파일 처리 완료: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 18:03:53,158 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_180353.txt
+2025-10-26 18:03:53,158 - INFO - 모든 파일 처리 완료
+2025-10-26 18:05:51,838 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 18:05:51,838 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 18:05:51,838 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 18:05:51,839 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 18:05:51,931 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [allow_tf32, disable_jit_profiling]
+2025-10-26 18:05:51,934 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 18:05:51,934 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 18:05:51,934 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 18:05:52,391 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 18:05:52,391 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 18:05:52,391 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 18:05:52,391 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 18:05:52,434 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 18:05:52,434 - INFO - 언어: 자동 감지 모드
+2025-10-26 18:05:52,434 - INFO - 총 1개 파일 처리 시작
+2025-10-26 18:05:52,434 - INFO -   - 오디오 파일: 1개
+2025-10-26 18:05:52,434 - INFO -   - 비디오 파일: 0개
+2025-10-26 18:05:52,434 - INFO - 노이즈 제거 시작: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 18:05:52,434 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 18:05:52,434 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 18:05:52,941 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 18:05:52,942 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 18:05:52,942 - INFO - 대안 방법으로 재시도...
+2025-10-26 18:05:52,942 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 18:05:52,964 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 18:05:52,994 - INFO - 노이즈 제거 완료: audio_out\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 18:05:53,003 - INFO - STT 처리 시작: audio_output\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 18:05:53,003 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 18:06:01,065 - INFO - Whisper 모델 로딩 완료
+2025-10-26 18:06:01,065 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 18:06:05,354 - INFO - 음성 특성 기반 화자분리 시작...
+2025-10-26 18:06:05,354 - INFO - 음성 특성 기반 화자 분리 시작 - 총 5개 세그먼트
+2025-10-26 18:06:05,354 - INFO - 음성 특성 추출 중...
+2025-10-26 18:06:10,092 - INFO - 음성 특성 클러스터링 완료: 2명 화자 감지 (관성: 37.29)
+2025-10-26 18:06:10,092 - INFO - 음성 특성 기반 일관성 후처리 시작...
+2025-10-26 18:06:10,092 - INFO - 후처리 전 화자 분포: {'화자B': 2, '화자A': 3}
+2025-10-26 18:06:10,092 - INFO - 고립된 화자 없음 - 후처리 완료
+2025-10-26 18:06:10,092 - INFO - 음성 특성 기반 화자 분포: {'화자B': 2, '화자A': 3}
+2025-10-26 18:06:10,094 - INFO - 간단한 전사 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript_simple.txt
+2025-10-26 18:06:10,094 - INFO - 음성 특성 기반 화자 분리 시작 - 총 5개 세그먼트
+2025-10-26 18:06:10,094 - INFO - 음성 특성 추출 중...
+2025-10-26 18:06:10,333 - INFO - 음성 특성 클러스터링 완료: 2명 화자 감지 (관성: 37.29)
+2025-10-26 18:06:10,333 - INFO - 음성 특성 기반 일관성 후처리 시작...
+2025-10-26 18:06:10,333 - INFO - 후처리 전 화자 분포: {'화자B': 2, '화자A': 3}
+2025-10-26 18:06:10,333 - INFO - 고립된 화자 없음 - 후처리 완료
+2025-10-26 18:06:10,333 - INFO - 음성 특성 기반 화자 분포: {'화자B': 2, '화자A': 3}
+2025-10-26 18:06:10,333 - INFO - SRT 자막 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_subtitle.srt
+2025-10-26 18:06:10,333 - INFO - STT 처리 완료: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript.txt
+2025-10-26 18:06:10,334 - INFO - 파일 처리 완료: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 18:06:10,335 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_180610.txt
+2025-10-26 18:06:10,335 - INFO - 모든 파일 처리 완료
+2025-10-26 18:07:38,543 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 18:07:38,543 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 18:07:38,543 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 18:07:38,544 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 18:07:38,638 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-26 18:07:38,638 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 18:07:38,639 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 18:07:38,639 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 18:07:39,110 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 18:07:39,110 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 18:07:39,110 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 18:07:39,110 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 18:07:39,149 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 18:07:39,149 - INFO - 언어: 자동 감지 모드
+2025-10-26 18:07:39,149 - WARNING - audio_input 폴더에 처리할 미디어 파일이 없습니다.
+2025-10-26 18:07:39,149 - INFO - 지원 형식: *.wav, *.mp3, *.m4a, *.flac, *.ogg, *.aac, *.mp4, *.avi, *.mov, *.mkv, *.webm, *.flv, *.wmv
+2025-10-26 18:07:51,470 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 18:07:51,470 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 18:07:51,470 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 18:07:51,470 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 18:07:51,557 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-26 18:07:51,558 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 18:07:51,558 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 18:07:51,558 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 18:07:51,984 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 18:07:51,984 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 18:07:51,984 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 18:07:51,985 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 18:07:52,023 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 18:07:52,023 - INFO - 언어: 자동 감지 모드
+2025-10-26 18:07:52,025 - WARNING - audio_input 폴더에 처리할 미디어 파일이 없습니다.
+2025-10-26 18:07:52,025 - INFO - 지원 형식: *.wav, *.mp3, *.m4a, *.flac, *.ogg, *.aac, *.mp4, *.avi, *.mov, *.mkv, *.webm, *.flv, *.wmv
+2025-10-26 18:08:10,058 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 18:08:10,058 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 18:08:10,060 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 18:08:10,060 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 18:08:10,150 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-26 18:08:10,150 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 18:08:10,150 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 18:08:10,150 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 18:08:10,588 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 18:08:10,588 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 18:08:10,588 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 18:08:10,588 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 18:08:10,628 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 18:08:10,628 - INFO - 언어: 자동 감지 모드
+2025-10-26 18:08:10,630 - INFO - 총 1개 파일 처리 시작
+2025-10-26 18:08:10,630 - INFO -   - 오디오 파일: 1개
+2025-10-26 18:08:10,630 - INFO -   - 비디오 파일: 0개
+2025-10-26 18:08:10,630 - INFO - 노이즈 제거 시작: audio_input\00cd6dce-7500-4314-9a40-a7fd511b7acc.mp3
+2025-10-26 18:08:10,630 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 18:08:10,630 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 18:08:11,092 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 18:08:11,092 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 18:08:11,092 - INFO - 대안 방법으로 재시도...
+2025-10-26 18:08:11,092 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 18:08:11,111 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 18:08:11,141 - INFO - 노이즈 제거 완료: audio_out\00cd6dce-7500-4314-9a40-a7fd511b7acc_denoised.wav
+2025-10-26 18:08:11,150 - INFO - STT 처리 시작: audio_output\00cd6dce-7500-4314-9a40-a7fd511b7acc_denoised.wav
+2025-10-26 18:08:11,150 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 18:08:19,288 - INFO - Whisper 모델 로딩 완료
+2025-10-26 18:08:19,288 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 18:08:22,223 - INFO - 음성 특성 기반 화자분리 시작...
+2025-10-26 18:08:22,223 - INFO - 음성 특성 기반 화자 분리 시작 - 총 3개 세그먼트
+2025-10-26 18:08:22,223 - INFO - 음성 특성 추출 중...
+2025-10-26 18:08:26,941 - INFO - 음성 특성 클러스터링 완료: 2명 화자 감지 (관성: 13.69)
+2025-10-26 18:08:26,941 - INFO - 음성 특성 기반 일관성 후처리 시작...
+2025-10-26 18:08:26,941 - INFO - 후처리 전 화자 분포: {'화자B': 2, '화자A': 1}
+2025-10-26 18:08:26,941 - INFO - 고립된 화자 발견: ['화자A']
+2025-10-26 18:08:26,941 - INFO - 고립된 화자 화자A → 화자B (앞뒤 동일)
+2025-10-26 18:08:26,941 - INFO - 후처리 후 화자 분포: {'화자B': 3}
+2025-10-26 18:08:26,941 - INFO - 음성 특성 기반 화자 분포: {'화자B': 3}
+2025-10-26 18:08:26,944 - INFO - 간단한 전사 파일 생성: script_output\00cd6dce-7500-4314-9a40-a7fd511b7acc_transcript_simple.txt
+2025-10-26 18:08:26,944 - INFO - 음성 특성 기반 화자 분리 시작 - 총 3개 세그먼트
+2025-10-26 18:08:26,944 - INFO - 음성 특성 추출 중...
+2025-10-26 18:08:27,150 - INFO - 음성 특성 클러스터링 완료: 2명 화자 감지 (관성: 13.69)
+2025-10-26 18:08:27,150 - INFO - 음성 특성 기반 일관성 후처리 시작...
+2025-10-26 18:08:27,150 - INFO - 후처리 전 화자 분포: {'화자B': 2, '화자A': 1}
+2025-10-26 18:08:27,150 - INFO - 고립된 화자 발견: ['화자A']
+2025-10-26 18:08:27,150 - INFO - 고립된 화자 화자A → 화자B (앞뒤 동일)
+2025-10-26 18:08:27,150 - INFO - 후처리 후 화자 분포: {'화자B': 3}
+2025-10-26 18:08:27,150 - INFO - 음성 특성 기반 화자 분포: {'화자B': 3}
+2025-10-26 18:08:27,150 - INFO - SRT 자막 파일 생성: script_output\00cd6dce-7500-4314-9a40-a7fd511b7acc_subtitle.srt
+2025-10-26 18:08:27,150 - INFO - STT 처리 완료: script_output\00cd6dce-7500-4314-9a40-a7fd511b7acc_transcript.txt
+2025-10-26 18:08:27,150 - INFO - 파일 처리 완료: audio_input\00cd6dce-7500-4314-9a40-a7fd511b7acc.mp3
+2025-10-26 18:08:27,155 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_180827.txt
+2025-10-26 18:08:27,155 - INFO - 모든 파일 처리 완료
+2025-10-26 18:10:20,388 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 18:10:20,388 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 18:10:20,388 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 18:10:20,389 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 18:10:20,475 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [allow_tf32, disable_jit_profiling]
+2025-10-26 18:10:20,476 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 18:10:20,476 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 18:10:20,476 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 18:10:20,897 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 18:10:20,900 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 18:10:20,900 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 18:10:20,900 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 18:10:20,939 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 18:10:20,939 - INFO - 언어: 자동 감지 모드
+2025-10-26 18:10:20,941 - INFO - 총 1개 파일 처리 시작
+2025-10-26 18:10:20,941 - INFO -   - 오디오 파일: 1개
+2025-10-26 18:10:20,941 - INFO -   - 비디오 파일: 0개
+2025-10-26 18:10:20,942 - INFO - 노이즈 제거 시작: audio_input\00cd6dce-7500-4314-9a40-a7fd511b7acc.mp3
+2025-10-26 18:10:20,942 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 18:10:20,942 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 18:10:21,392 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 18:10:21,392 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 18:10:21,392 - INFO - 대안 방법으로 재시도...
+2025-10-26 18:10:21,392 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 18:10:21,413 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 18:10:21,442 - INFO - 노이즈 제거 완료: audio_out\00cd6dce-7500-4314-9a40-a7fd511b7acc_denoised.wav
+2025-10-26 18:10:21,450 - INFO - STT 처리 시작: audio_output\00cd6dce-7500-4314-9a40-a7fd511b7acc_denoised.wav
+2025-10-26 18:10:21,450 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 18:10:29,390 - INFO - Whisper 모델 로딩 완료
+2025-10-26 18:10:29,390 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 18:10:32,266 - INFO - 음성 특성 기반 화자분리 시작...
+2025-10-26 18:10:32,266 - INFO - 음성 특성 기반 화자 분리 시작 - 총 3개 세그먼트
+2025-10-26 18:10:32,266 - INFO - 음성 특성 추출 중...
+2025-10-26 18:10:36,871 - INFO - 음성 특성 클러스터링 완료: 2명 화자 감지 (관성: 13.69)
+2025-10-26 18:10:36,871 - INFO - 음성 특성 기반 일관성 후처리 시작...
+2025-10-26 18:10:36,871 - INFO - 후처리 전 화자 분포: {'화자B': 2, '화자A': 1}
+2025-10-26 18:10:36,871 - INFO - 화자 수가 적절함 (2명) - 후처리 건너뛰기
+2025-10-26 18:10:36,871 - INFO - 음성 특성 기반 화자 분포: {'화자B': 2, '화자A': 1}
+2025-10-26 18:10:36,871 - INFO - 간단한 전사 파일 생성: script_output\00cd6dce-7500-4314-9a40-a7fd511b7acc_transcript_simple.txt
+2025-10-26 18:10:36,872 - INFO - 음성 특성 기반 화자 분리 시작 - 총 3개 세그먼트
+2025-10-26 18:10:36,872 - INFO - 음성 특성 추출 중...
+2025-10-26 18:10:37,081 - INFO - 음성 특성 클러스터링 완료: 2명 화자 감지 (관성: 13.69)
+2025-10-26 18:10:37,081 - INFO - 음성 특성 기반 일관성 후처리 시작...
+2025-10-26 18:10:37,081 - INFO - 후처리 전 화자 분포: {'화자B': 2, '화자A': 1}
+2025-10-26 18:10:37,081 - INFO - 화자 수가 적절함 (2명) - 후처리 건너뛰기
+2025-10-26 18:10:37,081 - INFO - 음성 특성 기반 화자 분포: {'화자B': 2, '화자A': 1}
+2025-10-26 18:10:37,081 - INFO - SRT 자막 파일 생성: script_output\00cd6dce-7500-4314-9a40-a7fd511b7acc_subtitle.srt
+2025-10-26 18:10:37,081 - INFO - STT 처리 완료: script_output\00cd6dce-7500-4314-9a40-a7fd511b7acc_transcript.txt
+2025-10-26 18:10:37,083 - INFO - 파일 처리 완료: audio_input\00cd6dce-7500-4314-9a40-a7fd511b7acc.mp3
+2025-10-26 18:10:37,084 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_181037.txt
+2025-10-26 18:10:37,084 - INFO - 모든 파일 처리 완료
+2025-10-26 18:11:42,447 - DEBUG - Registered checkpoint save hook for _speechbrain_save
+2025-10-26 18:11:42,448 - DEBUG - Registered checkpoint load hook for _speechbrain_load
+2025-10-26 18:11:42,448 - DEBUG - Registered checkpoint save hook for save
+2025-10-26 18:11:42,448 - DEBUG - Registered checkpoint load hook for load
+2025-10-26 18:11:42,540 - INFO - Applied quirks (see `speechbrain.utils.quirks`): [disable_jit_profiling, allow_tf32]
+2025-10-26 18:11:42,540 - INFO - Excluded quirks specified by the `SB_DISABLE_QUIRKS` environment (comma-separated list): []
+2025-10-26 18:11:42,540 - DEBUG - Registered checkpoint save hook for _save
+2025-10-26 18:11:42,540 - DEBUG - Registered checkpoint load hook for _recover
+2025-10-26 18:11:42,957 - INFO - 디렉토리 생성/확인: audio_input
+2025-10-26 18:11:42,957 - INFO - 디렉토리 생성/확인: audio_out
+2025-10-26 18:11:42,957 - INFO - 디렉토리 생성/확인: audio_output
+2025-10-26 18:11:42,957 - INFO - 디렉토리 생성/확인: script_output
+2025-10-26 18:11:42,998 - INFO - 파이프라인 초기화 완료 - 디바이스: cuda
+2025-10-26 18:11:42,998 - INFO - 언어: 자동 감지 모드
+2025-10-26 18:11:42,998 - INFO - 총 1개 파일 처리 시작
+2025-10-26 18:11:43,000 - INFO -   - 오디오 파일: 1개
+2025-10-26 18:11:43,000 - INFO -   - 비디오 파일: 0개
+2025-10-26 18:11:43,000 - INFO - 노이즈 제거 시작: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 18:11:43,000 - INFO - 노이즈 제거 모델 로딩 중...
+2025-10-26 18:11:43,000 - INFO - Fetch hyperparams.yaml: Fetching from HuggingFace Hub 'speechbrain/metricgan-plus-voicebank' if not cached
+2025-10-26 18:11:43,438 - DEBUG - Fetch: Local file found, creating symlink 'C:\Users\yhs54\.cache\huggingface\hub\models--speechbrain--metricgan-plus-voicebank\snapshots\a196ce26b3bdace6fa1d819017584bdbcce462a8\hyperparams.yaml' -> 'D:\새 폴더\capstone_1\pretrained_models\metricgan-plus-voicebank\hyperparams.yaml'
+2025-10-26 18:11:43,438 - ERROR - 노이즈 제거 모델 로딩 실패: [WinError 1314] 클라이언트가 필요한 권한을 가지고 있지 않습니다: 'C:\\Users\\yhs54\\.cache\\huggingface\\hub\\models--speechbrain--metricgan-plus-voicebank\\snapshots\\a196ce26b3bdace6fa1d819017584bdbcce462a8\\hyperparams.yaml' -> 'D:\\새 폴더\\capstone_1\\pretrained_models\\metricgan-plus-voicebank\\hyperparams.yaml'
+2025-10-26 18:11:43,438 - INFO - 대안 방법으로 재시도...
+2025-10-26 18:11:43,438 - INFO - 대안 노이즈 제거 방법 사용 (간단한 필터링)
+2025-10-26 18:11:43,459 - INFO - 간단한 필터링 방법으로 노이즈 제거
+2025-10-26 18:11:43,488 - INFO - 노이즈 제거 완료: audio_out\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 18:11:43,496 - INFO - STT 처리 시작: audio_output\00b7e5c8-851f-4889-8a79-02f44fa12913_denoised.wav
+2025-10-26 18:11:43,497 - INFO - Whisper 모델 (large-v3) 로딩 중...
+2025-10-26 18:11:51,515 - INFO - Whisper 모델 로딩 완료
+2025-10-26 18:11:51,515 - INFO - 언어 자동 감지로 STT 처리
+2025-10-26 18:11:55,856 - INFO - 음성 특성 기반 화자분리 시작...
+2025-10-26 18:11:55,856 - INFO - 음성 특성 기반 화자 분리 시작 - 총 5개 세그먼트
+2025-10-26 18:11:55,856 - INFO - 음성 특성 추출 중...
+2025-10-26 18:12:00,451 - INFO - 음성 특성 클러스터링 완료: 2명 화자 감지 (관성: 37.29)
+2025-10-26 18:12:00,451 - INFO - 음성 특성 기반 일관성 후처리 시작...
+2025-10-26 18:12:00,451 - INFO - 후처리 전 화자 분포: {'화자B': 2, '화자A': 3}
+2025-10-26 18:12:00,451 - INFO - 화자 수가 적절함 (2명) - 후처리 건너뛰기
+2025-10-26 18:12:00,451 - INFO - 음성 특성 기반 화자 분포: {'화자B': 2, '화자A': 3}
+2025-10-26 18:12:00,452 - INFO - 간단한 전사 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript_simple.txt
+2025-10-26 18:12:00,452 - INFO - 음성 특성 기반 화자 분리 시작 - 총 5개 세그먼트
+2025-10-26 18:12:00,452 - INFO - 음성 특성 추출 중...
+2025-10-26 18:12:00,694 - INFO - 음성 특성 클러스터링 완료: 2명 화자 감지 (관성: 37.29)
+2025-10-26 18:12:00,694 - INFO - 음성 특성 기반 일관성 후처리 시작...
+2025-10-26 18:12:00,694 - INFO - 후처리 전 화자 분포: {'화자B': 2, '화자A': 3}
+2025-10-26 18:12:00,694 - INFO - 화자 수가 적절함 (2명) - 후처리 건너뛰기
+2025-10-26 18:12:00,695 - INFO - 음성 특성 기반 화자 분포: {'화자B': 2, '화자A': 3}
+2025-10-26 18:12:00,695 - INFO - SRT 자막 파일 생성: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_subtitle.srt
+2025-10-26 18:12:00,695 - INFO - STT 처리 완료: script_output\00b7e5c8-851f-4889-8a79-02f44fa12913_transcript.txt
+2025-10-26 18:12:00,697 - INFO - 파일 처리 완료: audio_input\00b7e5c8-851f-4889-8a79-02f44fa12913.mp3
+2025-10-26 18:12:00,698 - INFO - 처리 결과 요약 저장: script_output\processing_summary_20251026_181200.txt
+2025-10-26 18:12:00,698 - INFO - 모든 파일 처리 완료

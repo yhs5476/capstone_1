@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
-음성 파일 노이즈 제거 → Whisper STT → 텍스트 저장 파이프라인
+음성 파일 노이즈 제거 → Whisper STT → 음성 특성 기반 화자분리 → 텍스트 저장 파이프라인
+
+필요한 라이브러리:
+- librosa: 고급 음성 특성 추출 (pip install librosa)
+- scikit-learn: 클러스터링 (pip install scikit-learn)
+- numpy: 기본 수치 연산 (pip install numpy)
 """
 
 import os
@@ -451,9 +456,13 @@ class AudioPipeline:
         """SRT 자막 파일 생성 (화자 정보 포함)"""
         with open(srt_file, 'w', encoding='utf-8') as f:
             if "segments" in result:
-                # ECAPA-VOXCELEB 화자분리 시도, 실패시 스마트 화자 할당
+                # 음성 특성 기반 화자분리 사용
                 if audio_file:
-                    speaker_assignments = self._assign_ecapa_speakers(audio_file, result["segments"])
+                    # 현재 오디오 파일 정보를 임시 저장
+                    self._current_audio_file = audio_file
+                    speaker_assignments = self._assign_smart_speakers(result["segments"])
+                    # 임시 정보 제거
+                    delattr(self, '_current_audio_file')
                 else:
                     speaker_assignments = self._assign_smart_speakers(result["segments"])
                 
@@ -501,12 +510,16 @@ class AudioPipeline:
         """간단한 타임스탬프+화자 정보 텍스트 파일 생성"""
         with open(simple_file, 'w', encoding='utf-8') as f:
             if "segments" in result:
-                # ECAPA-VOXCELEB 화자분리 시도, 실패시 스마트 화자 할당
+                # 음성 특성 기반 화자분리 사용
                 if audio_file:
-                    logger.info("ECAPA-VOXCELEB 화자분리 시작...")
-                    speaker_assignments = self._assign_ecapa_speakers(audio_file, result["segments"])
+                    logger.info("음성 특성 기반 화자분리 시작...")
+                    # 현재 오디오 파일 정보를 임시 저장
+                    self._current_audio_file = audio_file
+                    speaker_assignments = self._assign_smart_speakers(result["segments"])
+                    # 임시 정보 제거
+                    delattr(self, '_current_audio_file')
                 else:
-                    logger.info("규칙 기반 화자 할당 사용...")
+                    logger.info("대안 화자 할당 사용...")
                     speaker_assignments = self._assign_smart_speakers(result["segments"])
                 
                 for i, segment in enumerate(result["segments"]):
@@ -526,139 +539,427 @@ class AudioPipeline:
                 f.write(f"[00:00.000] 화자A: {result['text'].strip()}\n")
     
     def _assign_smart_speakers(self, segments):
-        """세그먼트 특성을 기반으로 스마트 화자 할당"""
+        """음성 특성 기반 화자 분리"""
         if not segments:
             return []
         
-        # 단일 화자 감지 로직
-        if self._is_single_speaker(segments):
-            logger.info("단일 화자로 감지됨 - 모든 세그먼트를 화자A로 할당")
-            return [f"화자A" for _ in segments]
+        logger.info(f"음성 특성 기반 화자 분리 시작 - 총 {len(segments)}개 세그먼트")
         
+        # 세그먼트가 너무 적으면 단일 화자
+        if len(segments) <= 1:
+            logger.info("세그먼트 1개 이하 - 단일 화자로 처리")
+            return ["화자A" for _ in segments]
+        
+        # 오디오 파일에서 음성 특성 추출 시도
+        audio_file = getattr(self, '_current_audio_file', None)
+        if audio_file:
+            return self._voice_feature_based_assignment(audio_file, segments)
+        else:
+            # 오디오 파일이 없으면 기본 로직
+            return self._fallback_speaker_assignment(segments)
+    
+    def _voice_feature_based_assignment(self, audio_file, segments):
+        """음성 특성(주파수, 피치, 스펙트럼) 기반 화자 분리"""
+        try:
+            logger.info("음성 특성 추출 중...")
+            
+            # 오디오 파일 로드
+            waveform, sample_rate = torchaudio.load(audio_file)
+            
+            # 모노 채널로 변환
+            if waveform.shape[0] > 1:
+                waveform = torch.mean(waveform, dim=0, keepdim=True)
+            
+            # 세그먼트별 음성 특성 추출
+            voice_features = []
+            valid_segments = []
+            
+            for i, segment in enumerate(segments):
+                start_time = segment.get("start", 0)
+                end_time = segment.get("end", start_time + 1)
+                text = segment.get("text", "").strip()
+                
+                if not text or end_time <= start_time:
+                    continue
+                
+                # 세그먼트 오디오 추출
+                start_sample = int(start_time * sample_rate)
+                end_sample = int(end_time * sample_rate)
+                
+                if start_sample >= waveform.shape[1] or end_sample <= start_sample:
+                    continue
+                
+                segment_audio = waveform[:, start_sample:end_sample]
+                
+                # 너무 짧은 세그먼트는 건너뛰기 (최소 0.3초)
+                if segment_audio.shape[1] < sample_rate * 0.3:
+                    continue
+                
+                # 음성 특성 추출
+                features = self._extract_voice_features(segment_audio.squeeze(), sample_rate)
+                if features is not None:
+                    voice_features.append(features)
+                    valid_segments.append((i, segment))
+            
+            if len(voice_features) < 2:
+                logger.info("유효한 음성 특성이 부족 - 단일 화자로 처리")
+                return ["화자A" for _ in segments]
+            
+            # 음성 특성 기반 클러스터링
+            speaker_labels = self._cluster_voice_features(voice_features)
+            
+            # 전체 세그먼트에 화자 할당
+            return self._assign_speakers_from_clusters(segments, valid_segments, speaker_labels)
+            
+        except Exception as e:
+            logger.error(f"음성 특성 기반 화자분리 실패: {e}")
+            return self._fallback_speaker_assignment(segments)
+    
+    def _extract_voice_features(self, audio_segment, sample_rate):
+        """세그먼트에서 음성 특성 추출 (피치, 스펙트럼 중심, MFCC)"""
+        try:
+            import librosa
+            import numpy as np
+            
+            # numpy 배열로 변환
+            if isinstance(audio_segment, torch.Tensor):
+                audio_np = audio_segment.numpy()
+            else:
+                audio_np = audio_segment
+            
+            # 1. 기본 주파수 (F0) - 피치
+            f0 = librosa.yin(audio_np, fmin=50, fmax=400, sr=sample_rate)
+            f0_mean = np.nanmean(f0[f0 > 0]) if np.any(f0 > 0) else 150
+            f0_std = np.nanstd(f0[f0 > 0]) if np.any(f0 > 0) else 0
+            
+            # 2. MFCC (Mel-frequency cepstral coefficients) - 음색 특성
+            mfcc = librosa.feature.mfcc(y=audio_np, sr=sample_rate, n_mfcc=13)
+            mfcc_mean = np.mean(mfcc, axis=1)
+            mfcc_std = np.std(mfcc, axis=1)
+            
+            # 3. 스펙트럴 중심 (Spectral Centroid) - 음성의 밝기
+            spectral_centroid = librosa.feature.spectral_centroid(y=audio_np, sr=sample_rate)
+            sc_mean = np.mean(spectral_centroid)
+            sc_std = np.std(spectral_centroid)
+            
+            # 4. 스펙트럴 대역폭 (Spectral Bandwidth)
+            spectral_bandwidth = librosa.feature.spectral_bandwidth(y=audio_np, sr=sample_rate)
+            sb_mean = np.mean(spectral_bandwidth)
+            
+            # 5. 영교차율 (Zero Crossing Rate) - 음성의 거칠기
+            zcr = librosa.feature.zero_crossing_rate(audio_np)
+            zcr_mean = np.mean(zcr)
+            
+            # 특성 벡터 구성
+            features = np.concatenate([
+                [f0_mean, f0_std],           # 피치 특성 (2차원)
+                mfcc_mean[:8],               # MFCC 평균 (8차원)
+                [sc_mean, sc_std],           # 스펙트럴 중심 (2차원)
+                [sb_mean],                   # 스펙트럴 대역폭 (1차원)
+                [zcr_mean]                   # 영교차율 (1차원)
+            ])
+            
+            # NaN 값 처리
+            features = np.nan_to_num(features, nan=0.0)
+            
+            logger.debug(f"음성 특성 추출 완료: F0={f0_mean:.1f}Hz, SC={sc_mean:.1f}Hz")
+            return features
+            
+        except ImportError:
+            logger.warning("librosa가 설치되지 않아 간단한 특성만 추출")
+            return self._extract_simple_voice_features(audio_segment, sample_rate)
+        except Exception as e:
+            logger.error(f"음성 특성 추출 실패: {e}")
+            return None
+    
+    def _extract_simple_voice_features(self, audio_segment, sample_rate):
+        """librosa 없이 간단한 음성 특성 추출"""
+        try:
+            import numpy as np
+            
+            if isinstance(audio_segment, torch.Tensor):
+                audio_np = audio_segment.numpy()
+            else:
+                audio_np = audio_segment
+            
+            # 1. RMS 에너지 (음량)
+            rms_energy = np.sqrt(np.mean(audio_np**2))
+            
+            # 2. 영교차율 (음성의 거칠기)
+            zero_crossings = np.sum(np.diff(np.sign(audio_np)) != 0)
+            zcr = zero_crossings / len(audio_np)
+            
+            # 3. 스펙트럼 분석 (FFT)
+            fft = np.fft.fft(audio_np)
+            magnitude = np.abs(fft[:len(fft)//2])
+            freqs = np.fft.fftfreq(len(audio_np), 1/sample_rate)[:len(fft)//2]
+            
+            # 스펙트럴 중심 (가중 평균 주파수)
+            if np.sum(magnitude) > 0:
+                spectral_centroid = np.sum(freqs * magnitude) / np.sum(magnitude)
+            else:
+                spectral_centroid = 0
+            
+            # 주요 주파수 (최대 에너지 주파수)
+            dominant_freq = freqs[np.argmax(magnitude)] if len(magnitude) > 0 else 0
+            
+            # 특성 벡터 구성
+            features = np.array([
+                rms_energy,
+                zcr,
+                spectral_centroid,
+                dominant_freq,
+                np.mean(magnitude),
+                np.std(magnitude)
+            ])
+            
+            # NaN 값 처리
+            features = np.nan_to_num(features, nan=0.0)
+            
+            logger.debug(f"간단한 음성 특성 추출: 주파수={dominant_freq:.1f}Hz, 에너지={rms_energy:.3f}")
+            return features
+            
+        except Exception as e:
+            logger.error(f"간단한 음성 특성 추출 실패: {e}")
+            return None
+    
+    def _cluster_voice_features(self, voice_features):
+        """음성 특성 기반 클러스터링"""
+        try:
+            import numpy as np
+            from sklearn.cluster import KMeans
+            from sklearn.preprocessing import StandardScaler
+            
+            features_array = np.array(voice_features)
+            
+            # 특성 정규화
+            scaler = StandardScaler()
+            features_normalized = scaler.fit_transform(features_array)
+            
+            # 최적 클러스터 수 결정 - 더 보수적으로 설정
+            n_segments = len(voice_features)
+            if n_segments <= 2:
+                n_clusters = 1  # 단일 화자
+            elif n_segments <= 4:
+                n_clusters = 2  # 2명 화자
+            elif n_segments <= 7:
+                n_clusters = min(2, n_segments - 1)  # 최대 2명
+            else:
+                n_clusters = min(3, n_segments // 2)  # 최대 3명
+            
+            if n_clusters == 1:
+                logger.info("단일 화자로 클러스터링")
+                return [0] * len(voice_features)
+            
+            # K-means 클러스터링 (여러 번 시도해서 최적 결과 선택)
+            best_labels = None
+            best_inertia = float('inf')
+            
+            for attempt in range(5):  # 5번 시도
+                try:
+                    kmeans = KMeans(n_clusters=n_clusters, random_state=42+attempt, n_init=10)
+                    labels = kmeans.fit_predict(features_normalized)
+                    
+                    if kmeans.inertia_ < best_inertia:
+                        best_inertia = kmeans.inertia_
+                        best_labels = labels
+                        best_centers = kmeans.cluster_centers_
+                except:
+                    continue
+            
+            if best_labels is None:
+                logger.warning("클러스터링 실패 - 단일 화자로 처리")
+                return [0] * len(voice_features)
+            
+            logger.info(f"음성 특성 클러스터링 완료: {n_clusters}명 화자 감지 (관성: {best_inertia:.2f})")
+            
+            # 클러스터 품질 검증
+            unique_labels = len(set(best_labels))
+            if unique_labels < n_clusters:
+                logger.warning(f"일부 클러스터가 비어있음: {unique_labels}/{n_clusters}")
+            
+            # 클러스터 중심점 정보 로깅
+            for i, center in enumerate(best_centers):
+                logger.debug(f"화자{chr(65+i)} 특성: F0={center[0]:.1f}, MFCC1={center[2]:.2f}")
+            
+            return best_labels
+            
+        except ImportError:
+            logger.warning("scikit-learn이 설치되지 않아 간단한 분류 사용")
+            return self._simple_voice_clustering(voice_features)
+        except Exception as e:
+            logger.error(f"음성 특성 클러스터링 실패: {e}")
+            return [0] * len(voice_features)  # 모두 같은 화자로 처리
+    
+    def _simple_voice_clustering(self, voice_features):
+        """간단한 음성 특성 기반 분류"""
+        try:
+            import numpy as np
+            
+            features_array = np.array(voice_features)
+            
+            # 첫 번째 특성 (피치 또는 주파수)을 기준으로 분류
+            first_feature = features_array[:, 0]
+            
+            # 중앙값을 기준으로 2그룹 분할
+            median_value = np.median(first_feature)
+            labels = (first_feature > median_value).astype(int)
+            
+            logger.info(f"간단한 음성 분류 완료: 기준값={median_value:.2f}")
+            return labels
+            
+        except Exception as e:
+            logger.error(f"간단한 음성 분류 실패: {e}")
+            return [0] * len(voice_features)
+    
+    def _assign_speakers_from_clusters(self, segments, valid_segments, speaker_labels):
+        """클러스터링 결과를 전체 세그먼트에 할당"""
+        speaker_assignments = []
+        label_to_speaker = {}
+        
+        # 라벨을 화자 이름으로 매핑
+        unique_labels = sorted(set(speaker_labels))
+        for i, label in enumerate(unique_labels):
+            speaker_letter = chr(ord('A') + i)
+            label_to_speaker[label] = f"화자{speaker_letter}"
+        
+        # 유효한 세그먼트의 인덱스와 라벨 매핑
+        valid_assignments = {}
+        for (seg_idx, segment), label in zip(valid_segments, speaker_labels):
+            valid_assignments[seg_idx] = label_to_speaker[label]
+        
+        # 전체 세그먼트에 화자 할당
+        current_speaker = "화자A"
+        for i, segment in enumerate(segments):
+            if i in valid_assignments:
+                current_speaker = valid_assignments[i]
+            
+            speaker_assignments.append(current_speaker)
+        
+        # 화자 일관성 후처리
+        speaker_assignments = self._post_process_voice_consistency(speaker_assignments, valid_segments, speaker_labels)
+        
+        # 결과 로깅
+        from collections import Counter
+        speaker_count = Counter(speaker_assignments)
+        logger.info(f"음성 특성 기반 화자 분포: {dict(speaker_count)}")
+        
+        return speaker_assignments
+    
+    def _post_process_voice_consistency(self, speaker_assignments, valid_segments, speaker_labels):
+        """음성 특성 기반 화자 일관성 후처리"""
+        try:
+            from collections import Counter
+            import numpy as np
+            
+            logger.info("음성 특성 기반 일관성 후처리 시작...")
+            
+            # 화자별 세그먼트 수 확인
+            speaker_counts = Counter(speaker_assignments)
+            logger.info(f"후처리 전 화자 분포: {dict(speaker_counts)}")
+            
+            # 화자분리 품질 확인 - 너무 적극적인 통합 방지
+            total_speakers = len(speaker_counts)
+            if total_speakers <= 2:
+                logger.info(f"화자 수가 적절함 ({total_speakers}명) - 후처리 건너뛰기")
+                return speaker_assignments
+            
+            # 단일 세그먼트만 가진 화자들 찾기 (더 신중하게)
+            isolated_speakers = [speaker for speaker, count in speaker_counts.items() if count == 1]
+            
+            if not isolated_speakers:
+                logger.info("고립된 화자 없음 - 후처리 완료")
+                return speaker_assignments
+            
+            logger.info(f"고립된 화자 발견: {isolated_speakers}")
+            
+            # 고립된 화자 통합 - 더 신중한 조건
+            assignments = speaker_assignments.copy()
+            
+            for isolated_speaker in isolated_speakers:
+                isolated_index = speaker_assignments.index(isolated_speaker)
+                
+                # 앞뒤 화자 확인
+                prev_speaker = None
+                next_speaker = None
+                
+                if isolated_index > 0:
+                    prev_speaker = assignments[isolated_index - 1]
+                if isolated_index < len(assignments) - 1:
+                    next_speaker = assignments[isolated_index + 1]
+                
+                # 통합 대상 결정 - 더 엄격한 조건
+                target_speaker = None
+                
+                # 1. 앞뒤가 정확히 같은 화자이고, 그 화자가 3개 이상 세그먼트를 가진 경우만 통합
+                if (prev_speaker and prev_speaker == next_speaker and 
+                    speaker_counts[prev_speaker] >= 3):
+                    target_speaker = prev_speaker
+                    logger.info(f"고립된 화자 {isolated_speaker} → {target_speaker} (앞뒤 동일, 주요화자)")
+                
+                # 2. 다른 경우는 통합하지 않음 (화자 다양성 보존)
+                else:
+                    logger.info(f"고립된 화자 {isolated_speaker} 유지 (화자 다양성 보존)")
+                
+                # 통합 실행
+                if target_speaker:
+                    assignments[isolated_index] = target_speaker
+            
+            # 최종 결과 로깅
+            final_counts = Counter(assignments)
+            logger.info(f"후처리 후 화자 분포: {dict(final_counts)}")
+            
+            return assignments
+            
+        except Exception as e:
+            logger.error(f"음성 특성 일관성 후처리 실패: {e}")
+            return speaker_assignments
+    
+    def _fallback_speaker_assignment(self, segments):
+        """음성 특성 추출 실패 시 대안 로직"""
+        logger.info("대안 화자 할당 로직 사용")
+        
+        # 1.5초 이상 침묵 기준으로 간단 분리
         speaker_assignments = []
         current_speaker = 'A'
-        last_end_time = 0
-        speaker_map = {}
-        speaker_count = 0
         
         for i, segment in enumerate(segments):
-            start_time = segment.get("start", 0)
-            end_time = segment.get("end", start_time + 1)
-            text = segment.get("text", "").strip()
-            
-            if not text:
-                speaker_assignments.append(f"화자{current_speaker}")
-                continue
-            
-            # 화자 변경 조건들
-            should_change_speaker = False
-            curr_duration = end_time - start_time  # 현재 세그먼트 길이 계산
-            
-            # 1. 긴 침묵 (2초 이상) 후에는 화자가 바뀔 가능성이 높음
-            silence_duration = start_time - last_end_time
-            if silence_duration > 2.0:
-                should_change_speaker = True
-            
-            # 2. 문장 길이가 매우 다른 경우 (화자의 말하기 패턴 차이)
             if i > 0:
-                prev_duration = segments[i-1].get("end", 0) - segments[i-1].get("start", 0)
-                duration_ratio = max(curr_duration, prev_duration) / (min(curr_duration, prev_duration) + 0.1)
-                if duration_ratio > 2.5:  # 길이 차이가 2.5배 이상
-                    should_change_speaker = True
-            
-            # 3. 특정 패턴 감지 (질문, 대답, 감탄사 등)
-            text_lower = text.lower()
-            question_patterns = ['?', '？', 'どう', 'なに', 'なん', '何']
-            response_patterns = ['はい', 'そう', 'うん', 'ええ', 'いえ', 'いや']
-            
-            if i > 0:
-                prev_text = segments[i-1].get("text", "").lower()
-                # 이전이 질문이고 현재가 대답인 경우
-                if any(p in prev_text for p in question_patterns) and any(p in text_lower for p in response_patterns):
-                    should_change_speaker = True
-            
-            # 4. 연속된 짧은 발화 (대화의 특성)
-            if curr_duration < 1.5 and silence_duration < 0.5 and i > 0:
-                prev_duration = segments[i-1].get("end", 0) - segments[i-1].get("start", 0)
-                if prev_duration < 1.5:  # 둘 다 짧은 발화면 화자가 다를 가능성
-                    should_change_speaker = True
-            
-            # 화자 변경 실행
-            if should_change_speaker and i > 0:
-                # 기존 화자들 중에서 가장 오래 안 나온 화자 선택
-                available_speakers = ['A', 'B', 'C']
-                if current_speaker in available_speakers:
-                    available_speakers.remove(current_speaker)
+                prev_end = segments[i-1].get("end", 0)
+                curr_start = segment.get("start", 0)
+                silence_duration = curr_start - prev_end
                 
-                if available_speakers:
-                    # 가장 최근에 사용되지 않은 화자 선택
-                    for speaker in available_speakers:
-                        speaker_name = f"화자{speaker}"
-                        if speaker_name not in [speaker_assignments[j] for j in range(max(0, i-3), i)]:
-                            current_speaker = speaker
-                            break
-                    else:
-                        current_speaker = available_speakers[0]
+                if silence_duration > 1.5:
+                    current_speaker = 'B' if current_speaker == 'A' else 'A'
             
-            speaker_name = f"화자{current_speaker}"
-            speaker_assignments.append(speaker_name)
-            last_end_time = end_time
+            speaker_assignments.append(f"화자{current_speaker}")
         
         return speaker_assignments
     
     def _is_single_speaker(self, segments):
-        """단일 화자인지 판단하는 로직"""
+        """간단한 단일 화자 판단 로직"""
         if len(segments) <= 2:
-            return True  # 세그먼트가 2개 이하면 단일 화자로 간주
+            logger.info("세그먼트 2개 이하 - 단일 화자로 판단")
+            return True
         
-        # 화자 변경 신호 카운트
-        speaker_change_signals = 0
-        total_silence_time = 0
-        long_silences = 0
+        # 1.5초 이상 침묵이 있는지만 확인
+        long_silence_count = 0
         
         for i in range(1, len(segments)):
-            prev_segment = segments[i-1]
-            curr_segment = segments[i]
-            
-            prev_end = prev_segment.get("end", 0)
-            curr_start = curr_segment.get("start", 0)
+            prev_end = segments[i-1].get("end", 0)
+            curr_start = segments[i].get("start", 0)
             silence_duration = curr_start - prev_end
             
-            total_silence_time += silence_duration
-            
-            # 긴 침묵 (3초 이상) - 화자 변경 신호
-            if silence_duration > 3.0:
-                long_silences += 1
-                speaker_change_signals += 1
-            
-            # 발화 길이 차이가 매우 큰 경우
-            prev_duration = prev_segment.get("end", 0) - prev_segment.get("start", 0)
-            curr_duration = curr_segment.get("end", 0) - curr_segment.get("start", 0)
-            
-            if prev_duration > 0 and curr_duration > 0:
-                duration_ratio = max(curr_duration, prev_duration) / min(curr_duration, prev_duration)
-                if duration_ratio > 3.0:  # 3배 이상 차이
-                    speaker_change_signals += 1
+            if silence_duration > 1.5:
+                long_silence_count += 1
         
-        # 평균 침묵 시간
-        avg_silence = total_silence_time / max(len(segments) - 1, 1)
+        # 긴 침묵이 없으면 단일 화자
+        is_single = long_silence_count == 0
         
-        # 단일 화자 판단 기준
-        single_speaker_criteria = [
-            speaker_change_signals <= 1,  # 화자 변경 신호가 1개 이하
-            long_silences <= 1,           # 긴 침묵이 1개 이하
-            avg_silence < 2.0,            # 평균 침묵이 2초 미만
-            len(segments) < 8             # 세그먼트가 8개 미만 (짧은 발화)
-        ]
+        logger.info(f"단일 화자 판단: {'단일' if is_single else '다중'} "
+                   f"(1.5초+ 침묵: {long_silence_count}회, 세그먼트: {len(segments)}개)")
         
-        # 기준 중 3개 이상 만족하면 단일 화자
-        single_speaker_score = sum(single_speaker_criteria)
-        
-        logger.info(f"단일 화자 판단: 점수 {single_speaker_score}/4 "
-                   f"(화자변경신호: {speaker_change_signals}, 긴침묵: {long_silences}, "
-                   f"평균침묵: {avg_silence:.1f}초, 세그먼트: {len(segments)}개)")
-        
-        return single_speaker_score >= 3
+        return is_single
     
     def _extract_speaker_embeddings(self, audio_file, segments):
         """ECAPA-VOXCELEB를 사용하여 세그먼트별 화자 임베딩 추출"""
